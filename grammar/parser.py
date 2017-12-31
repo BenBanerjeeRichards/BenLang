@@ -32,7 +32,7 @@ class BenLangPrintVisitor(BenLangVisitor):
 
     def visitExpr(self, ctx):
         x = expression_to_ast(ctx)
-        return x
+        draw_ast(x)
 
 
 def expression_to_ast(root : BenLangParser.StatementContext):
@@ -53,26 +53,18 @@ def expression_to_ast(root : BenLangParser.StatementContext):
         raise NotImplemented()
 
 
-def graphviz(t, terminalNames, relations=[], labels={}, node_key=0):
+def graphviz(t, is_root_node, node_text, get_children, relations=[], labels={}, node_key=0):
     child_key = node_key
-    pattern = re.compile(r'\s+')
 
-    if isinstance(t, tree.Tree.TerminalNodeImpl):
-        text = re.sub(pattern, '', t.symbol.text)
-        text = text.replace("\"", "\\\"")
-        if len(text) > 0:
-            labels[node_key] = "{}({})".format(terminalNames[t.symbol.type], text)
-        else:
-            labels[node_key] = "{}".format(terminalNames[t.symbol.type])
+    labels[node_key] = node_text(t)
 
+    if is_root_node(t):
         return node_key, relations, labels
-    else:
-        labels[node_key] = t.__class__.__name__.replace("Context", "")
 
-    for child in t.getChildren():
+    for child in get_children(t):
         child_key += 1
         relations.append((node_key, child_key))
-        child_key += graphviz(child, terminalNames, relations, labels, child_key)[0]
+        child_key += graphviz(child, is_root_node, node_text, get_children,  relations, labels, child_key)[0]
 
     return child_key, relations, labels
 
@@ -89,16 +81,43 @@ def graphviz_output(relations, labels):
     return out
 
 
+def ctx_text(ctx, symbolic_names):
+    if isinstance(ctx, tree.Tree.TerminalNodeImpl):
+        pattern = re.compile(r'\s+')
+        text = re.sub(pattern, '', ctx.symbol.text)
+
+        if len(text) > 0:
+            text = "{}({})".format(symbolic_names[ctx.symbol.type], text)
+        else:
+            text = "{}".format(text)
+
+        return text.replace("\"", "\\\"")
+    else:
+        return ctx.__class__.__name__.replace("Context", "")
+
+
+def draw_syntax_tree(theTree, symbolic_names):
+    out = graphviz(theTree, lambda t: isinstance(t, tree.Tree.TerminalNodeImpl), lambda x: ctx_text(x, symbolic_names), lambda x: x.getChildren())
+    write_gv_output(out)
+
+
+def draw_ast(ast : Node):
+    out = graphviz(ast, lambda t: len(ast.get_children()) == 0, lambda x: x.__str__(), lambda x : x.get_children())
+    write_gv_output(out)
+
+
+def write_gv_output(output):
+    gv = graphviz_output(output[1], output[2])
+    f = open("graphviz", "w+")
+    f.write(gv)
+    f.close()
+
 def main(argv):
     lexer = BenLangLexer(FileStream(argv[1]))
     stream = CommonTokenStream(lexer)
     parser = BenLangParser(stream)
     tree = parser.prog()
-    out = graphviz(tree, parser.symbolicNames)
-    gv = graphviz_output(out[1], out[2])
-    f = open("graphviz", "w+")
-    f.write(gv)
-    f.close()
+    #draw_syntax_tree(tree, BenLangLexer.symbolicNames)
 
     printer = BenLangPrintVisitor()
     printer.visit(tree)
