@@ -4,7 +4,7 @@ from BenLangVisitor import BenLangVisitor
 from BenLangParser import BenLangParser
 import sys
 import re
-
+from grammar.ast import *
 
 def prop_print(obj, sep):
     print(sep.join("%s: %s" % item for item in vars(obj).items()))
@@ -31,18 +31,26 @@ class BenLangPrintVisitor(BenLangVisitor):
         return ctx.symbol
 
     def visitExpr(self, ctx):
-        print("visiting expr")
-        return self.visitChildren(ctx)
+        x = expression_to_ast(ctx)
+        return x
 
 
-def print_level_order(t, indent):
-    prop_print(t, "\n")
-    print("{0}{1}".format('   ' * indent, t))
-    if isinstance(t, tree.Tree.TerminalNodeImpl):
-        return
+def expression_to_ast(root : BenLangParser.StatementContext):
+    if isinstance(root, tree.Tree.TerminalNodeImpl):
+        # Reached value
+        return IntNode(root.symbol.text)
 
-    for child in t.getChildren():
-        print_level_order(child, indent + 1)
+    if len(root.children) == 1:
+        return expression_to_ast(root.children[0])
+
+    if len(root.children) == 3:
+        operator = root.children[1].symbol.type
+        if operator == BenLangLexer.PLUS:
+            return AdditionNode(expression_to_ast(root.children[0]), expression_to_ast(root.children[2]))
+        if operator == BenLangLexer.MULT:
+            return MultiplicationNode(expression_to_ast(root.children[0]), expression_to_ast(root.children[2]))
+
+        raise NotImplemented()
 
 
 def graphviz(t, terminalNames, relations=[], labels={}, node_key=0):
