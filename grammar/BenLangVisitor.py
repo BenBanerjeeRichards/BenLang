@@ -54,11 +54,6 @@ class BenLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by BenLangParser#bool_expr.
-    def visitBool_expr(self, ctx:BenLangParser.Bool_exprContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by BenLangParser#expr.
     def visitExpr(self, ctx:BenLangParser.ExprContext):
         return self.visitChildren(ctx)

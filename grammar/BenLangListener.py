@@ -89,15 +89,6 @@ class BenLangListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by BenLangParser#bool_expr.
-    def enterBool_expr(self, ctx:BenLangParser.Bool_exprContext):
-        pass
-
-    # Exit a parse tree produced by BenLangParser#bool_expr.
-    def exitBool_expr(self, ctx:BenLangParser.Bool_exprContext):
-        pass
-
-
     # Enter a parse tree produced by BenLangParser#expr.
     def enterExpr(self, ctx:BenLangParser.ExprContext):
         pass

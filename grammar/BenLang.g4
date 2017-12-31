@@ -1,13 +1,12 @@
 grammar BenLang;		
 statement: 	expr SEMICOLON
-		  | bool_expr SEMICOLON
 		  | ifOnly
 		  | ifElse
 		  | whileLoop
 		  | declaration SEMICOLON
 		  | assignment SEMICOLON;
 
-expression: expr | bool_expr | STRING;
+expression: expr | STRING;
 
 statementBlock: statement*;
 prog:		statementBlock;
@@ -15,26 +14,24 @@ prog:		statementBlock;
 declaration: TYPE IDENTIFIER EQUALS expression;
 assignment: IDENTIFIER EQUALS expression;
 
-whileLoop: 		WHILE LBRACKET bool_expr RBRACKET LMOUSTACHE statementBlock RMOUSTACHE;
-ifElse:     	IF LBRACKET bool_expr RBRACKET LMOUSTACHE statementBlock RMOUSTACHE ELSE LMOUSTACHE statementBlock RMOUSTACHE;
-ifOnly:			IF LBRACKET bool_expr RBRACKET LMOUSTACHE statementBlock RMOUSTACHE;
+whileLoop: 		WHILE LBRACKET expr RBRACKET LMOUSTACHE statementBlock RMOUSTACHE;
+ifElse:     	IF LBRACKET expr RBRACKET LMOUSTACHE statementBlock RMOUSTACHE ELSE LMOUSTACHE statementBlock RMOUSTACHE;
+ifOnly:			IF LBRACKET expr RBRACKET LMOUSTACHE statementBlock RMOUSTACHE;
 
-bool_expr: TRUE | FALSE | IDENTIFIER | application | INTEGER
-      |<assoc=right> OP_NOT bool_expr
-      | LBRACKET bool_expr RBRACKET
-      | bool_expr OP_LT bool_expr
-      | bool_expr OP_EQ bool_expr
-      | bool_expr OP_AND bool_expr
-      | bool_expr OP_OR bool_expr;
-
-expr: INTEGER | IDENTIFIER | application
-      |<assoc=right> PLUS expr
+expr: TRUE | FALSE | IDENTIFIER | application | INTEGER
+      |<assoc=right> OP_NOT expr
+      | PLUS expr
       | MINUS expr
       | LBRACKET expr RBRACKET
-      | expr '*' expr
+	  | expr '*' expr
       | expr '/' expr
       | expr PLUS expr
-      | expr '-' expr;
+      | expr '-' expr
+      | expr OP_LT expr
+      | expr OP_EQ expr
+      | expr OP_AND expr
+      | expr OP_OR expr;
+
 
 application: IDENTIFIER params;
 params: LBRACKET expression? paramsRest;

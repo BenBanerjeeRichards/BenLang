@@ -2,13 +2,13 @@ if (true) {
 	outputStr("indeed");
 }
 
-var x = 34;
+int x = 34;
 
 if (x - x == 0) {
 	outputStr("of course");
 }
 
-while (x > 0) {
+while (x < 0) {
 	x = x - 1;
 	outputInt(x);
 }
