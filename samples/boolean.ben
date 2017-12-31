@@ -1,0 +1,9 @@
+outputBool(true && (false || true))
+outputBool(false)
+int x = 34;
+string y = "testerino"
+outputBool(x > 34)
+outputBool("ben" == "hello")
+outputBool(y == "hello")
+outputBool(34 > 239)
+outputBool((x > 34) && !("ben" == "hello"))

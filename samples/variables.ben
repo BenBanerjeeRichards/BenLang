@@ -1,0 +1,17 @@
+int a = 34;
+int b = 12;
+
+string hello = "hello";
+
+bool x = false;
+bool y = !x;
+
+outputInt(a + b);
+outputInt(a + b * a)
+outputInt((a + b) * a)
+outputInt(23 - (a + b) * a)
+outputInt(34 + a)
+outputInt(x || y)
+outputInt(x && !(y || x))
+
+outputStr(hello)

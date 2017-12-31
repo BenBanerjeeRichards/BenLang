@@ -1,0 +1,4 @@
+outputInt(23 + 34)
+outputInt(34 + 5 / 2)
+outputInt((34 + 5) / 2)
+outputInt(3*(1 + 2 + 3 / 4) - 23)
