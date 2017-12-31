@@ -20,16 +20,76 @@ class IntNode(Node):
         return self.value
 
 
-class AdditionNode(Node):
+class TrueNode(Node):
 
+    def __init__(self):
+        super().__init__([])
+
+    def __str__(self):
+        return "true"
+
+
+class FalseNode(Node):
+    def __init__(self):
+        super().__init__([])
+
+    def __str__(self):
+        return "false"
+
+
+class AbstractBinaryOpNode(Node):
     def __init__(self, left: Node, right: Node):
         super().__init__([left, right])
 
     def __str__(self):
+        return ""
+
+
+class AbstractUnaryOpNode(Node):
+    def __init__(self, operand : Node):
+        super().__init__([operand])
+
+    def __str__(self):
+        return ""
+
+
+class AdditionNode(AbstractBinaryOpNode):
+    def __str__(self):
         return "+"
 
 
-class MultiplicationNode(AdditionNode):
+class MultiplicationNode(AbstractBinaryOpNode):
     def __str__(self):
         return "*"
+
+
+class DivisionNode(AbstractBinaryOpNode):
+    def __str__(self):
+        return "/"
+
+
+class SubtractionNode(AbstractBinaryOpNode):
+    def __str__(self):
+        return "-"
+
+
+class MinusOperation(AbstractUnaryOpNode):
+    def __str__(self):
+        return "-"
+
+
+class NotOperation(AbstractUnaryOpNode):
+    def __str__(self):
+        return "!"
+
+
+class AndNode(AbstractBinaryOpNode):
+    def __str__(self):
+        return "&&"
+
+
+class OrNode(AbstractBinaryOpNode):
+    def __str__(self):
+        return "||"
+
 

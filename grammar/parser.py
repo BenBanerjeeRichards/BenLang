@@ -35,20 +35,53 @@ class BenLangPrintVisitor(BenLangVisitor):
         draw_ast(x)
 
 
+def is_terminal(x):
+    return isinstance(x, tree.Tree.TerminalNodeImpl)
+
+
 def expression_to_ast(root : BenLangParser.StatementContext):
-    if isinstance(root, tree.Tree.TerminalNodeImpl):
+    if is_terminal(root):
         # Reached value
-        return IntNode(root.symbol.text)
+        if root.symbol.type == BenLangLexer.INTEGER:
+            return IntNode(root.symbol.text)
+        if root.symbol.type == BenLangLexer.FALSE:
+            return FalseNode()
+        if root.symbol.type == BenLangLexer.TRUE:
+            return TrueNode()
 
     if len(root.children) == 1:
         return expression_to_ast(root.children[0])
 
+    if len(root.children) == 2:
+        # unary operators
+        sym = root.children[0].symbol.type
+        if sym == BenLangLexer.MINUS:
+            return MinusOperation(expression_to_ast(root.children[1]))
+
+        if sym == BenLangLexer.PLUS:
+            # Useless, we can discard it
+            return expression_to_ast(root.children[1])
+
+        if sym == BenLangLexer.OP_NOT:
+            return NotOperation(expression_to_ast(root.children[1]))
+
     if len(root.children) == 3:
+        if is_terminal(root.children[0]) and is_terminal(root.children[2]):
+            return expression_to_ast(root.children[1])
+
         operator = root.children[1].symbol.type
         if operator == BenLangLexer.PLUS:
             return AdditionNode(expression_to_ast(root.children[0]), expression_to_ast(root.children[2]))
         if operator == BenLangLexer.MULT:
             return MultiplicationNode(expression_to_ast(root.children[0]), expression_to_ast(root.children[2]))
+        if operator == BenLangLexer.DIV:
+            return DivisionNode(expression_to_ast(root.children[0]), expression_to_ast(root.children[2]))
+        if operator == BenLangLexer.MINUS:
+            return SubtractionNode(expression_to_ast(root.children[0]), expression_to_ast(root.children[2]))
+        if operator == BenLangLexer.OP_AND:
+            return AndNode(expression_to_ast(root.children[0]), expression_to_ast(root.children[2]))
+        if operator == BenLangLexer.OP_OR:
+            return OrNode(expression_to_ast(root.children[0]), expression_to_ast(root.children[2]))
 
         raise NotImplemented()
 
