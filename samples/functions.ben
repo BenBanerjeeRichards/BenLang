@@ -1,9 +1,9 @@
-outputStr("Enter input> ")
-outputStr(input())
-outputStr("\n")
+outputStr("Enter input> ");
+outputStr(input());
+outputStr("\n");
 
-outputInt(34)
-outputBool(false)
-outputBool(true)
+outputInt(34);
+outputBool(false);
+outputBool(true);
 
-outputInt(stringToInt("34"))
+outputInt(stringToInt("34"));

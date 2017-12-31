@@ -1,14 +1,1 @@
-if (true) {
-	outputStr("indeed");
-}
-
-int x = 34;
-
-if (x - x == 0) {
-	outputStr("of course");
-}
-
-while (x < 0) {
-	x = x - 1;
-	outputInt(x);
-}
+outputBool(true);

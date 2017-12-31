@@ -18,7 +18,7 @@ whileLoop: 		WHILE LBRACKET expr RBRACKET LMOUSTACHE statementBlock RMOUSTACHE;
 ifElse:     	IF LBRACKET expr RBRACKET LMOUSTACHE statementBlock RMOUSTACHE ELSE LMOUSTACHE statementBlock RMOUSTACHE;
 ifOnly:			IF LBRACKET expr RBRACKET LMOUSTACHE statementBlock RMOUSTACHE;
 
-expr: TRUE | FALSE | IDENTIFIER | application | INTEGER
+expr: TRUE | FALSE | IDENTIFIER | application | INTEGER  | STRING
       |<assoc=right> OP_NOT expr
       | PLUS expr
       | MINUS expr
