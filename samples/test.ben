@@ -1,6 +1,2 @@
-if (x < 9 && false) {
-	x * 3;
-} else {
-	y * 2;
-}
-
+int x = 34 * 3;
+x = sin(x) * 2;

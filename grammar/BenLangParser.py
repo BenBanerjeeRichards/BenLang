@@ -7,59 +7,62 @@ import sys
 
 def serializedATN():
     with StringIO() as buf:
-        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3&")
-        buf.write("\u0096\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
-        buf.write("\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\3\2")
-        buf.write("\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\5\2\'\n\2")
-        buf.write("\3\3\7\3*\n\3\f\3\16\3-\13\3\3\4\3\4\3\5\3\5\3\5\3\5\3")
-        buf.write("\5\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\7\3\b")
-        buf.write("\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\t\3\t\3")
-        buf.write("\t\3\t\3\t\3\t\3\t\3\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n")
-        buf.write("\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\5\ng\n\n\3\n\3\n")
-        buf.write("\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3")
-        buf.write("\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\7\n\u0081\n\n\f\n\16")
-        buf.write("\n\u0084\13\n\3\13\3\13\3\13\3\f\3\f\5\f\u008b\n\f\3\f")
-        buf.write("\3\f\3\r\3\r\3\r\3\r\3\r\5\r\u0094\n\r\3\r\2\3\22\16\2")
-        buf.write("\4\6\b\n\f\16\20\22\24\26\30\2\2\2\u00a2\2&\3\2\2\2\4")
-        buf.write("+\3\2\2\2\6.\3\2\2\2\b\60\3\2\2\2\n\65\3\2\2\2\f9\3\2")
-        buf.write("\2\2\16A\3\2\2\2\20M\3\2\2\2\22f\3\2\2\2\24\u0085\3\2")
-        buf.write("\2\2\26\u0088\3\2\2\2\30\u0093\3\2\2\2\32\33\5\22\n\2")
-        buf.write("\33\34\7!\2\2\34\'\3\2\2\2\35\'\5\20\t\2\36\'\5\16\b\2")
-        buf.write("\37\'\5\f\7\2 !\5\b\5\2!\"\7!\2\2\"\'\3\2\2\2#$\5\n\6")
-        buf.write("\2$%\7!\2\2%\'\3\2\2\2&\32\3\2\2\2&\35\3\2\2\2&\36\3\2")
-        buf.write("\2\2&\37\3\2\2\2& \3\2\2\2&#\3\2\2\2\'\3\3\2\2\2(*\5\2")
-        buf.write("\2\2)(\3\2\2\2*-\3\2\2\2+)\3\2\2\2+,\3\2\2\2,\5\3\2\2")
-        buf.write("\2-+\3\2\2\2./\5\4\3\2/\7\3\2\2\2\60\61\7\b\2\2\61\62")
-        buf.write("\7\30\2\2\62\63\7\3\2\2\63\64\5\22\n\2\64\t\3\2\2\2\65")
-        buf.write("\66\7\30\2\2\66\67\7\3\2\2\678\5\22\n\28\13\3\2\2\29:")
-        buf.write("\7\f\2\2:;\7\31\2\2;<\5\22\n\2<=\7\32\2\2=>\7\16\2\2>")
-        buf.write("?\5\4\3\2?@\7\r\2\2@\r\3\2\2\2AB\7\20\2\2BC\7\31\2\2C")
-        buf.write("D\5\22\n\2DE\7\32\2\2EF\7\16\2\2FG\5\4\3\2GH\7\r\2\2H")
-        buf.write("I\7\17\2\2IJ\7\16\2\2JK\5\4\3\2KL\7\r\2\2L\17\3\2\2\2")
-        buf.write("MN\7\20\2\2NO\7\31\2\2OP\5\22\n\2PQ\7\32\2\2QR\7\16\2")
-        buf.write("\2RS\5\4\3\2ST\7\r\2\2T\21\3\2\2\2UV\b\n\1\2Vg\7\27\2")
-        buf.write("\2Wg\7\26\2\2Xg\7\30\2\2Yg\5\24\13\2Zg\7\33\2\2[g\7\4")
-        buf.write("\2\2\\]\7\23\2\2]g\5\22\n\16^_\7\34\2\2_g\5\22\n\r`a\7")
-        buf.write("\35\2\2ag\5\22\n\fbc\7\31\2\2cd\5\22\n\2de\7\32\2\2eg")
-        buf.write("\3\2\2\2fU\3\2\2\2fW\3\2\2\2fX\3\2\2\2fY\3\2\2\2fZ\3\2")
-        buf.write("\2\2f[\3\2\2\2f\\\3\2\2\2f^\3\2\2\2f`\3\2\2\2fb\3\2\2")
-        buf.write("\2g\u0082\3\2\2\2hi\f\n\2\2ij\7\37\2\2j\u0081\5\22\n\13")
-        buf.write("kl\f\t\2\2lm\7\36\2\2m\u0081\5\22\n\nno\f\b\2\2op\7\34")
-        buf.write("\2\2p\u0081\5\22\n\tqr\f\7\2\2rs\7\35\2\2s\u0081\5\22")
-        buf.write("\n\btu\f\6\2\2uv\7\21\2\2v\u0081\5\22\n\7wx\f\5\2\2xy")
-        buf.write("\7\22\2\2y\u0081\5\22\n\6z{\f\4\2\2{|\7\25\2\2|\u0081")
-        buf.write("\5\22\n\5}~\f\3\2\2~\177\7\24\2\2\177\u0081\5\22\n\4\u0080")
-        buf.write("h\3\2\2\2\u0080k\3\2\2\2\u0080n\3\2\2\2\u0080q\3\2\2\2")
-        buf.write("\u0080t\3\2\2\2\u0080w\3\2\2\2\u0080z\3\2\2\2\u0080}\3")
-        buf.write("\2\2\2\u0081\u0084\3\2\2\2\u0082\u0080\3\2\2\2\u0082\u0083")
-        buf.write("\3\2\2\2\u0083\23\3\2\2\2\u0084\u0082\3\2\2\2\u0085\u0086")
-        buf.write("\7\30\2\2\u0086\u0087\5\26\f\2\u0087\25\3\2\2\2\u0088")
-        buf.write("\u008a\7\31\2\2\u0089\u008b\5\22\n\2\u008a\u0089\3\2\2")
-        buf.write("\2\u008a\u008b\3\2\2\2\u008b\u008c\3\2\2\2\u008c\u008d")
-        buf.write("\5\30\r\2\u008d\27\3\2\2\2\u008e\u008f\7 \2\2\u008f\u0090")
-        buf.write("\5\22\n\2\u0090\u0091\5\30\r\2\u0091\u0094\3\2\2\2\u0092")
-        buf.write("\u0094\7\32\2\2\u0093\u008e\3\2\2\2\u0093\u0092\3\2\2")
-        buf.write("\2\u0094\31\3\2\2\2\t&+f\u0080\u0082\u008a\u0093")
+        buf.write("\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3%")
+        buf.write("\u009a\4\2\t\2\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7")
+        buf.write("\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t\13\4\f\t\f\4\r\t\r\4\16")
+        buf.write("\t\16\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2\3\2")
+        buf.write("\5\2)\n\2\3\3\7\3,\n\3\f\3\16\3/\13\3\3\4\3\4\3\5\3\5")
+        buf.write("\3\6\3\6\3\6\3\6\3\6\3\7\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3")
+        buf.write("\b\3\b\3\b\3\b\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t\3\t")
+        buf.write("\3\t\3\t\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\13\3\13\3\13")
+        buf.write("\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13")
+        buf.write("\3\13\3\13\3\13\5\13k\n\13\3\13\3\13\3\13\3\13\3\13\3")
+        buf.write("\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13")
+        buf.write("\3\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13\7\13\u0085\n")
+        buf.write("\13\f\13\16\13\u0088\13\13\3\f\3\f\3\f\3\r\3\r\5\r\u008f")
+        buf.write("\n\r\3\r\3\r\3\16\3\16\3\16\3\16\3\16\5\16\u0098\n\16")
+        buf.write("\3\16\2\3\24\17\2\4\6\b\n\f\16\20\22\24\26\30\32\2\3\3")
+        buf.write("\2\b\n\2\u00a5\2(\3\2\2\2\4-\3\2\2\2\6\60\3\2\2\2\b\62")
+        buf.write("\3\2\2\2\n\64\3\2\2\2\f9\3\2\2\2\16=\3\2\2\2\20E\3\2\2")
+        buf.write("\2\22Q\3\2\2\2\24j\3\2\2\2\26\u0089\3\2\2\2\30\u008c\3")
+        buf.write("\2\2\2\32\u0097\3\2\2\2\34\35\5\24\13\2\35\36\7 \2\2\36")
+        buf.write(")\3\2\2\2\37)\5\22\n\2 )\5\20\t\2!)\5\16\b\2\"#\5\n\6")
+        buf.write("\2#$\7 \2\2$)\3\2\2\2%&\5\f\7\2&\'\7 \2\2\')\3\2\2\2(")
+        buf.write("\34\3\2\2\2(\37\3\2\2\2( \3\2\2\2(!\3\2\2\2(\"\3\2\2\2")
+        buf.write("(%\3\2\2\2)\3\3\2\2\2*,\5\2\2\2+*\3\2\2\2,/\3\2\2\2-+")
+        buf.write("\3\2\2\2-.\3\2\2\2.\5\3\2\2\2/-\3\2\2\2\60\61\5\4\3\2")
+        buf.write("\61\7\3\2\2\2\62\63\t\2\2\2\63\t\3\2\2\2\64\65\5\b\5\2")
+        buf.write("\65\66\7\27\2\2\66\67\7\3\2\2\678\5\24\13\28\13\3\2\2")
+        buf.write("\29:\7\27\2\2:;\7\3\2\2;<\5\24\13\2<\r\3\2\2\2=>\7\13")
+        buf.write("\2\2>?\7\30\2\2?@\5\24\13\2@A\7\31\2\2AB\7\r\2\2BC\5\4")
+        buf.write("\3\2CD\7\f\2\2D\17\3\2\2\2EF\7\17\2\2FG\7\30\2\2GH\5\24")
+        buf.write("\13\2HI\7\31\2\2IJ\7\r\2\2JK\5\4\3\2KL\7\f\2\2LM\7\16")
+        buf.write("\2\2MN\7\r\2\2NO\5\4\3\2OP\7\f\2\2P\21\3\2\2\2QR\7\17")
+        buf.write("\2\2RS\7\30\2\2ST\5\24\13\2TU\7\31\2\2UV\7\r\2\2VW\5\4")
+        buf.write("\3\2WX\7\f\2\2X\23\3\2\2\2YZ\b\13\1\2Zk\7\26\2\2[k\7\25")
+        buf.write("\2\2\\k\7\27\2\2]k\5\26\f\2^k\7\32\2\2_k\7\4\2\2`a\7\22")
+        buf.write("\2\2ak\5\24\13\16bc\7\33\2\2ck\5\24\13\rde\7\34\2\2ek")
+        buf.write("\5\24\13\ffg\7\30\2\2gh\5\24\13\2hi\7\31\2\2ik\3\2\2\2")
+        buf.write("jY\3\2\2\2j[\3\2\2\2j\\\3\2\2\2j]\3\2\2\2j^\3\2\2\2j_")
+        buf.write("\3\2\2\2j`\3\2\2\2jb\3\2\2\2jd\3\2\2\2jf\3\2\2\2k\u0086")
+        buf.write("\3\2\2\2lm\f\n\2\2mn\7\36\2\2n\u0085\5\24\13\13op\f\t")
+        buf.write("\2\2pq\7\35\2\2q\u0085\5\24\13\nrs\f\b\2\2st\7\33\2\2")
+        buf.write("t\u0085\5\24\13\tuv\f\7\2\2vw\7\34\2\2w\u0085\5\24\13")
+        buf.write("\bxy\f\6\2\2yz\7\20\2\2z\u0085\5\24\13\7{|\f\5\2\2|}\7")
+        buf.write("\21\2\2}\u0085\5\24\13\6~\177\f\4\2\2\177\u0080\7\24\2")
+        buf.write("\2\u0080\u0085\5\24\13\5\u0081\u0082\f\3\2\2\u0082\u0083")
+        buf.write("\7\23\2\2\u0083\u0085\5\24\13\4\u0084l\3\2\2\2\u0084o")
+        buf.write("\3\2\2\2\u0084r\3\2\2\2\u0084u\3\2\2\2\u0084x\3\2\2\2")
+        buf.write("\u0084{\3\2\2\2\u0084~\3\2\2\2\u0084\u0081\3\2\2\2\u0085")
+        buf.write("\u0088\3\2\2\2\u0086\u0084\3\2\2\2\u0086\u0087\3\2\2\2")
+        buf.write("\u0087\25\3\2\2\2\u0088\u0086\3\2\2\2\u0089\u008a\7\27")
+        buf.write("\2\2\u008a\u008b\5\30\r\2\u008b\27\3\2\2\2\u008c\u008e")
+        buf.write("\7\30\2\2\u008d\u008f\5\24\13\2\u008e\u008d\3\2\2\2\u008e")
+        buf.write("\u008f\3\2\2\2\u008f\u0090\3\2\2\2\u0090\u0091\5\32\16")
+        buf.write("\2\u0091\31\3\2\2\2\u0092\u0093\7\37\2\2\u0093\u0094\5")
+        buf.write("\24\13\2\u0094\u0095\5\32\16\2\u0095\u0098\3\2\2\2\u0096")
+        buf.write("\u0098\7\31\2\2\u0097\u0092\3\2\2\2\u0097\u0096\3\2\2")
+        buf.write("\2\u0098\33\3\2\2\2\t(-j\u0084\u0086\u008e\u0097")
         return buf.getvalue()
 
 
@@ -74,14 +77,13 @@ class BenLangParser ( Parser ):
     sharedContextCache = PredictionContextCache()
 
     literalNames = [ "<INVALID>", "'='", "<INVALID>", "<INVALID>", "'\"'", 
-                     "'\\'", "<INVALID>", "'bool'", "'int'", "'string'", 
-                     "'while'", "'}'", "'{'", "'else'", "'if'", "'<'", "'=='", 
-                     "'!'", "'||'", "'&&'", "'false'", "'true'", "<INVALID>", 
-                     "'('", "')'", "<INVALID>", "'+'", "'-'", "'/'", "'*'", 
-                     "','", "';'" ]
+                     "'\\'", "'bool'", "'int'", "'string'", "'while'", "'}'", 
+                     "'{'", "'else'", "'if'", "'<'", "'=='", "'!'", "'||'", 
+                     "'&&'", "'false'", "'true'", "<INVALID>", "'('", "')'", 
+                     "<INVALID>", "'+'", "'-'", "'/'", "'*'", "','", "';'" ]
 
     symbolicNames = [ "<INVALID>", "EQUALS", "STRING", "ESCAPE_CHAR", "QUOT", 
-                      "BACKSLASH", "TYPE", "BOOL_TYPE", "INT_TYPE", "STRING_TYPE", 
+                      "BACKSLASH", "BOOL_TYPE", "INT_TYPE", "STRING_TYPE", 
                       "WHILE", "RMOUSTACHE", "LMOUSTACHE", "ELSE", "IF", 
                       "OP_LT", "OP_EQ", "OP_NOT", "OP_OR", "OP_AND", "FALSE", 
                       "TRUE", "IDENTIFIER", "LBRACKET", "RBRACKET", "INTEGER", 
@@ -91,17 +93,18 @@ class BenLangParser ( Parser ):
     RULE_statement = 0
     RULE_statementBlock = 1
     RULE_prog = 2
-    RULE_declaration = 3
-    RULE_assignment = 4
-    RULE_whileLoop = 5
-    RULE_ifElse = 6
-    RULE_ifOnly = 7
-    RULE_expr = 8
-    RULE_application = 9
-    RULE_params = 10
-    RULE_paramsRest = 11
+    RULE_aType = 3
+    RULE_declaration = 4
+    RULE_assignment = 5
+    RULE_whileLoop = 6
+    RULE_ifElse = 7
+    RULE_ifOnly = 8
+    RULE_expr = 9
+    RULE_application = 10
+    RULE_params = 11
+    RULE_paramsRest = 12
 
-    ruleNames =  [ "statement", "statementBlock", "prog", "declaration", 
+    ruleNames =  [ "statement", "statementBlock", "prog", "aType", "declaration", 
                    "assignment", "whileLoop", "ifElse", "ifOnly", "expr", 
                    "application", "params", "paramsRest" ]
 
@@ -111,37 +114,36 @@ class BenLangParser ( Parser ):
     ESCAPE_CHAR=3
     QUOT=4
     BACKSLASH=5
-    TYPE=6
-    BOOL_TYPE=7
-    INT_TYPE=8
-    STRING_TYPE=9
-    WHILE=10
-    RMOUSTACHE=11
-    LMOUSTACHE=12
-    ELSE=13
-    IF=14
-    OP_LT=15
-    OP_EQ=16
-    OP_NOT=17
-    OP_OR=18
-    OP_AND=19
-    FALSE=20
-    TRUE=21
-    IDENTIFIER=22
-    LBRACKET=23
-    RBRACKET=24
-    INTEGER=25
-    PLUS=26
-    MINUS=27
-    DIV=28
-    MULT=29
-    COMMA=30
-    SEMICOLON=31
-    PLUSMINUS=32
-    WS=33
-    STRING_CHAR=34
-    UNICODE=35
-    ESCAPE=36
+    BOOL_TYPE=6
+    INT_TYPE=7
+    STRING_TYPE=8
+    WHILE=9
+    RMOUSTACHE=10
+    LMOUSTACHE=11
+    ELSE=12
+    IF=13
+    OP_LT=14
+    OP_EQ=15
+    OP_NOT=16
+    OP_OR=17
+    OP_AND=18
+    FALSE=19
+    TRUE=20
+    IDENTIFIER=21
+    LBRACKET=22
+    RBRACKET=23
+    INTEGER=24
+    PLUS=25
+    MINUS=26
+    DIV=27
+    MULT=28
+    COMMA=29
+    SEMICOLON=30
+    PLUSMINUS=31
+    WS=32
+    STRING_CHAR=33
+    UNICODE=34
+    ESCAPE=35
 
     def __init__(self, input:TokenStream, output:TextIO = sys.stdout):
         super().__init__(input, output)
@@ -209,48 +211,48 @@ class BenLangParser ( Parser ):
         localctx = BenLangParser.StatementContext(self, self._ctx, self.state)
         self.enterRule(localctx, 0, self.RULE_statement)
         try:
-            self.state = 36
+            self.state = 38
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,0,self._ctx)
             if la_ == 1:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 24
+                self.state = 26
                 self.expr(0)
-                self.state = 25
+                self.state = 27
                 self.match(BenLangParser.SEMICOLON)
                 pass
 
             elif la_ == 2:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 27
+                self.state = 29
                 self.ifOnly()
                 pass
 
             elif la_ == 3:
                 self.enterOuterAlt(localctx, 3)
-                self.state = 28
+                self.state = 30
                 self.ifElse()
                 pass
 
             elif la_ == 4:
                 self.enterOuterAlt(localctx, 4)
-                self.state = 29
+                self.state = 31
                 self.whileLoop()
                 pass
 
             elif la_ == 5:
                 self.enterOuterAlt(localctx, 5)
-                self.state = 30
+                self.state = 32
                 self.declaration()
-                self.state = 31
+                self.state = 33
                 self.match(BenLangParser.SEMICOLON)
                 pass
 
             elif la_ == 6:
                 self.enterOuterAlt(localctx, 6)
-                self.state = 33
+                self.state = 35
                 self.assignment()
-                self.state = 34
+                self.state = 36
                 self.match(BenLangParser.SEMICOLON)
                 pass
 
@@ -303,13 +305,13 @@ class BenLangParser ( Parser ):
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 41
+            self.state = 43
             self._errHandler.sync(self)
             _la = self._input.LA(1)
-            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << BenLangParser.STRING) | (1 << BenLangParser.TYPE) | (1 << BenLangParser.WHILE) | (1 << BenLangParser.IF) | (1 << BenLangParser.OP_NOT) | (1 << BenLangParser.FALSE) | (1 << BenLangParser.TRUE) | (1 << BenLangParser.IDENTIFIER) | (1 << BenLangParser.LBRACKET) | (1 << BenLangParser.INTEGER) | (1 << BenLangParser.PLUS) | (1 << BenLangParser.MINUS))) != 0):
-                self.state = 38
+            while (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << BenLangParser.STRING) | (1 << BenLangParser.BOOL_TYPE) | (1 << BenLangParser.INT_TYPE) | (1 << BenLangParser.STRING_TYPE) | (1 << BenLangParser.WHILE) | (1 << BenLangParser.IF) | (1 << BenLangParser.OP_NOT) | (1 << BenLangParser.FALSE) | (1 << BenLangParser.TRUE) | (1 << BenLangParser.IDENTIFIER) | (1 << BenLangParser.LBRACKET) | (1 << BenLangParser.INTEGER) | (1 << BenLangParser.PLUS) | (1 << BenLangParser.MINUS))) != 0):
+                self.state = 40
                 self.statement()
-                self.state = 43
+                self.state = 45
                 self._errHandler.sync(self)
                 _la = self._input.LA(1)
 
@@ -357,8 +359,65 @@ class BenLangParser ( Parser ):
         self.enterRule(localctx, 4, self.RULE_prog)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 44
+            self.state = 46
             self.statementBlock()
+        except RecognitionException as re:
+            localctx.exception = re
+            self._errHandler.reportError(self, re)
+            self._errHandler.recover(self, re)
+        finally:
+            self.exitRule()
+        return localctx
+
+    class ATypeContext(ParserRuleContext):
+
+        def __init__(self, parser, parent:ParserRuleContext=None, invokingState:int=-1):
+            super().__init__(parent, invokingState)
+            self.parser = parser
+
+        def BOOL_TYPE(self):
+            return self.getToken(BenLangParser.BOOL_TYPE, 0)
+
+        def STRING_TYPE(self):
+            return self.getToken(BenLangParser.STRING_TYPE, 0)
+
+        def INT_TYPE(self):
+            return self.getToken(BenLangParser.INT_TYPE, 0)
+
+        def getRuleIndex(self):
+            return BenLangParser.RULE_aType
+
+        def enterRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "enterAType" ):
+                listener.enterAType(self)
+
+        def exitRule(self, listener:ParseTreeListener):
+            if hasattr( listener, "exitAType" ):
+                listener.exitAType(self)
+
+        def accept(self, visitor:ParseTreeVisitor):
+            if hasattr( visitor, "visitAType" ):
+                return visitor.visitAType(self)
+            else:
+                return visitor.visitChildren(self)
+
+
+
+
+    def aType(self):
+
+        localctx = BenLangParser.ATypeContext(self, self._ctx, self.state)
+        self.enterRule(localctx, 6, self.RULE_aType)
+        self._la = 0 # Token type
+        try:
+            self.enterOuterAlt(localctx, 1)
+            self.state = 48
+            _la = self._input.LA(1)
+            if not((((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << BenLangParser.BOOL_TYPE) | (1 << BenLangParser.INT_TYPE) | (1 << BenLangParser.STRING_TYPE))) != 0)):
+                self._errHandler.recoverInline(self)
+            else:
+                self._errHandler.reportMatch(self)
+                self.consume()
         except RecognitionException as re:
             localctx.exception = re
             self._errHandler.reportError(self, re)
@@ -373,8 +432,9 @@ class BenLangParser ( Parser ):
             super().__init__(parent, invokingState)
             self.parser = parser
 
-        def TYPE(self):
-            return self.getToken(BenLangParser.TYPE, 0)
+        def aType(self):
+            return self.getTypedRuleContext(BenLangParser.ATypeContext,0)
+
 
         def IDENTIFIER(self):
             return self.getToken(BenLangParser.IDENTIFIER, 0)
@@ -409,16 +469,16 @@ class BenLangParser ( Parser ):
     def declaration(self):
 
         localctx = BenLangParser.DeclarationContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 6, self.RULE_declaration)
+        self.enterRule(localctx, 8, self.RULE_declaration)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 46
-            self.match(BenLangParser.TYPE)
-            self.state = 47
+            self.state = 50
+            self.aType()
+            self.state = 51
             self.match(BenLangParser.IDENTIFIER)
-            self.state = 48
+            self.state = 52
             self.match(BenLangParser.EQUALS)
-            self.state = 49
+            self.state = 53
             self.expr(0)
         except RecognitionException as re:
             localctx.exception = re
@@ -467,14 +527,14 @@ class BenLangParser ( Parser ):
     def assignment(self):
 
         localctx = BenLangParser.AssignmentContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 8, self.RULE_assignment)
+        self.enterRule(localctx, 10, self.RULE_assignment)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 51
+            self.state = 55
             self.match(BenLangParser.IDENTIFIER)
-            self.state = 52
+            self.state = 56
             self.match(BenLangParser.EQUALS)
-            self.state = 53
+            self.state = 57
             self.expr(0)
         except RecognitionException as re:
             localctx.exception = re
@@ -536,22 +596,22 @@ class BenLangParser ( Parser ):
     def whileLoop(self):
 
         localctx = BenLangParser.WhileLoopContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 10, self.RULE_whileLoop)
+        self.enterRule(localctx, 12, self.RULE_whileLoop)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 55
-            self.match(BenLangParser.WHILE)
-            self.state = 56
-            self.match(BenLangParser.LBRACKET)
-            self.state = 57
-            self.expr(0)
-            self.state = 58
-            self.match(BenLangParser.RBRACKET)
             self.state = 59
-            self.match(BenLangParser.LMOUSTACHE)
+            self.match(BenLangParser.WHILE)
             self.state = 60
-            self.statementBlock()
+            self.match(BenLangParser.LBRACKET)
             self.state = 61
+            self.expr(0)
+            self.state = 62
+            self.match(BenLangParser.RBRACKET)
+            self.state = 63
+            self.match(BenLangParser.LMOUSTACHE)
+            self.state = 64
+            self.statementBlock()
+            self.state = 65
             self.match(BenLangParser.RMOUSTACHE)
         except RecognitionException as re:
             localctx.exception = re
@@ -625,30 +685,30 @@ class BenLangParser ( Parser ):
     def ifElse(self):
 
         localctx = BenLangParser.IfElseContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 12, self.RULE_ifElse)
+        self.enterRule(localctx, 14, self.RULE_ifElse)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 63
-            self.match(BenLangParser.IF)
-            self.state = 64
-            self.match(BenLangParser.LBRACKET)
-            self.state = 65
-            self.expr(0)
-            self.state = 66
-            self.match(BenLangParser.RBRACKET)
             self.state = 67
-            self.match(BenLangParser.LMOUSTACHE)
+            self.match(BenLangParser.IF)
             self.state = 68
-            self.statementBlock()
+            self.match(BenLangParser.LBRACKET)
             self.state = 69
-            self.match(BenLangParser.RMOUSTACHE)
+            self.expr(0)
             self.state = 70
-            self.match(BenLangParser.ELSE)
+            self.match(BenLangParser.RBRACKET)
             self.state = 71
             self.match(BenLangParser.LMOUSTACHE)
             self.state = 72
             self.statementBlock()
             self.state = 73
+            self.match(BenLangParser.RMOUSTACHE)
+            self.state = 74
+            self.match(BenLangParser.ELSE)
+            self.state = 75
+            self.match(BenLangParser.LMOUSTACHE)
+            self.state = 76
+            self.statementBlock()
+            self.state = 77
             self.match(BenLangParser.RMOUSTACHE)
         except RecognitionException as re:
             localctx.exception = re
@@ -710,22 +770,22 @@ class BenLangParser ( Parser ):
     def ifOnly(self):
 
         localctx = BenLangParser.IfOnlyContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 14, self.RULE_ifOnly)
+        self.enterRule(localctx, 16, self.RULE_ifOnly)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 75
-            self.match(BenLangParser.IF)
-            self.state = 76
-            self.match(BenLangParser.LBRACKET)
-            self.state = 77
-            self.expr(0)
-            self.state = 78
-            self.match(BenLangParser.RBRACKET)
             self.state = 79
-            self.match(BenLangParser.LMOUSTACHE)
+            self.match(BenLangParser.IF)
             self.state = 80
-            self.statementBlock()
+            self.match(BenLangParser.LBRACKET)
             self.state = 81
+            self.expr(0)
+            self.state = 82
+            self.match(BenLangParser.RBRACKET)
+            self.state = 83
+            self.match(BenLangParser.LMOUSTACHE)
+            self.state = 84
+            self.statementBlock()
+            self.state = 85
             self.match(BenLangParser.RMOUSTACHE)
         except RecognitionException as re:
             localctx.exception = re
@@ -818,76 +878,76 @@ class BenLangParser ( Parser ):
         _parentState = self.state
         localctx = BenLangParser.ExprContext(self, self._ctx, _parentState)
         _prevctx = localctx
-        _startState = 16
-        self.enterRecursionRule(localctx, 16, self.RULE_expr, _p)
+        _startState = 18
+        self.enterRecursionRule(localctx, 18, self.RULE_expr, _p)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 100
+            self.state = 104
             self._errHandler.sync(self)
             la_ = self._interp.adaptivePredict(self._input,2,self._ctx)
             if la_ == 1:
-                self.state = 84
+                self.state = 88
                 self.match(BenLangParser.TRUE)
                 pass
 
             elif la_ == 2:
-                self.state = 85
+                self.state = 89
                 self.match(BenLangParser.FALSE)
                 pass
 
             elif la_ == 3:
-                self.state = 86
+                self.state = 90
                 self.match(BenLangParser.IDENTIFIER)
                 pass
 
             elif la_ == 4:
-                self.state = 87
+                self.state = 91
                 self.application()
                 pass
 
             elif la_ == 5:
-                self.state = 88
+                self.state = 92
                 self.match(BenLangParser.INTEGER)
                 pass
 
             elif la_ == 6:
-                self.state = 89
+                self.state = 93
                 self.match(BenLangParser.STRING)
                 pass
 
             elif la_ == 7:
-                self.state = 90
+                self.state = 94
                 self.match(BenLangParser.OP_NOT)
-                self.state = 91
+                self.state = 95
                 self.expr(12)
                 pass
 
             elif la_ == 8:
-                self.state = 92
+                self.state = 96
                 self.match(BenLangParser.PLUS)
-                self.state = 93
+                self.state = 97
                 self.expr(11)
                 pass
 
             elif la_ == 9:
-                self.state = 94
+                self.state = 98
                 self.match(BenLangParser.MINUS)
-                self.state = 95
+                self.state = 99
                 self.expr(10)
                 pass
 
             elif la_ == 10:
-                self.state = 96
+                self.state = 100
                 self.match(BenLangParser.LBRACKET)
-                self.state = 97
+                self.state = 101
                 self.expr(0)
-                self.state = 98
+                self.state = 102
                 self.match(BenLangParser.RBRACKET)
                 pass
 
 
             self._ctx.stop = self._input.LT(-1)
-            self.state = 128
+            self.state = 132
             self._errHandler.sync(self)
             _alt = self._interp.adaptivePredict(self._input,4,self._ctx)
             while _alt!=2 and _alt!=ATN.INVALID_ALT_NUMBER:
@@ -895,115 +955,115 @@ class BenLangParser ( Parser ):
                     if self._parseListeners is not None:
                         self.triggerExitRuleEvent()
                     _prevctx = localctx
-                    self.state = 126
+                    self.state = 130
                     self._errHandler.sync(self)
                     la_ = self._interp.adaptivePredict(self._input,3,self._ctx)
                     if la_ == 1:
                         localctx = BenLangParser.ExprContext(self, _parentctx, _parentState)
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 102
+                        self.state = 106
                         if not self.precpred(self._ctx, 8):
                             from antlr4.error.Errors import FailedPredicateException
                             raise FailedPredicateException(self, "self.precpred(self._ctx, 8)")
-                        self.state = 103
+                        self.state = 107
                         self.match(BenLangParser.MULT)
-                        self.state = 104
+                        self.state = 108
                         self.expr(9)
                         pass
 
                     elif la_ == 2:
                         localctx = BenLangParser.ExprContext(self, _parentctx, _parentState)
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 105
+                        self.state = 109
                         if not self.precpred(self._ctx, 7):
                             from antlr4.error.Errors import FailedPredicateException
                             raise FailedPredicateException(self, "self.precpred(self._ctx, 7)")
-                        self.state = 106
+                        self.state = 110
                         self.match(BenLangParser.DIV)
-                        self.state = 107
+                        self.state = 111
                         self.expr(8)
                         pass
 
                     elif la_ == 3:
                         localctx = BenLangParser.ExprContext(self, _parentctx, _parentState)
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 108
+                        self.state = 112
                         if not self.precpred(self._ctx, 6):
                             from antlr4.error.Errors import FailedPredicateException
                             raise FailedPredicateException(self, "self.precpred(self._ctx, 6)")
-                        self.state = 109
+                        self.state = 113
                         self.match(BenLangParser.PLUS)
-                        self.state = 110
+                        self.state = 114
                         self.expr(7)
                         pass
 
                     elif la_ == 4:
                         localctx = BenLangParser.ExprContext(self, _parentctx, _parentState)
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 111
+                        self.state = 115
                         if not self.precpred(self._ctx, 5):
                             from antlr4.error.Errors import FailedPredicateException
                             raise FailedPredicateException(self, "self.precpred(self._ctx, 5)")
-                        self.state = 112
+                        self.state = 116
                         self.match(BenLangParser.MINUS)
-                        self.state = 113
+                        self.state = 117
                         self.expr(6)
                         pass
 
                     elif la_ == 5:
                         localctx = BenLangParser.ExprContext(self, _parentctx, _parentState)
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 114
+                        self.state = 118
                         if not self.precpred(self._ctx, 4):
                             from antlr4.error.Errors import FailedPredicateException
                             raise FailedPredicateException(self, "self.precpred(self._ctx, 4)")
-                        self.state = 115
+                        self.state = 119
                         self.match(BenLangParser.OP_LT)
-                        self.state = 116
+                        self.state = 120
                         self.expr(5)
                         pass
 
                     elif la_ == 6:
                         localctx = BenLangParser.ExprContext(self, _parentctx, _parentState)
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 117
+                        self.state = 121
                         if not self.precpred(self._ctx, 3):
                             from antlr4.error.Errors import FailedPredicateException
                             raise FailedPredicateException(self, "self.precpred(self._ctx, 3)")
-                        self.state = 118
+                        self.state = 122
                         self.match(BenLangParser.OP_EQ)
-                        self.state = 119
+                        self.state = 123
                         self.expr(4)
                         pass
 
                     elif la_ == 7:
                         localctx = BenLangParser.ExprContext(self, _parentctx, _parentState)
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 120
+                        self.state = 124
                         if not self.precpred(self._ctx, 2):
                             from antlr4.error.Errors import FailedPredicateException
                             raise FailedPredicateException(self, "self.precpred(self._ctx, 2)")
-                        self.state = 121
+                        self.state = 125
                         self.match(BenLangParser.OP_AND)
-                        self.state = 122
+                        self.state = 126
                         self.expr(3)
                         pass
 
                     elif la_ == 8:
                         localctx = BenLangParser.ExprContext(self, _parentctx, _parentState)
                         self.pushNewRecursionContext(localctx, _startState, self.RULE_expr)
-                        self.state = 123
+                        self.state = 127
                         if not self.precpred(self._ctx, 1):
                             from antlr4.error.Errors import FailedPredicateException
                             raise FailedPredicateException(self, "self.precpred(self._ctx, 1)")
-                        self.state = 124
+                        self.state = 128
                         self.match(BenLangParser.OP_OR)
-                        self.state = 125
+                        self.state = 129
                         self.expr(2)
                         pass
 
              
-                self.state = 130
+                self.state = 134
                 self._errHandler.sync(self)
                 _alt = self._interp.adaptivePredict(self._input,4,self._ctx)
 
@@ -1051,12 +1111,12 @@ class BenLangParser ( Parser ):
     def application(self):
 
         localctx = BenLangParser.ApplicationContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 18, self.RULE_application)
+        self.enterRule(localctx, 20, self.RULE_application)
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 131
+            self.state = 135
             self.match(BenLangParser.IDENTIFIER)
-            self.state = 132
+            self.state = 136
             self.params()
         except RecognitionException as re:
             localctx.exception = re
@@ -1106,21 +1166,21 @@ class BenLangParser ( Parser ):
     def params(self):
 
         localctx = BenLangParser.ParamsContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 20, self.RULE_params)
+        self.enterRule(localctx, 22, self.RULE_params)
         self._la = 0 # Token type
         try:
             self.enterOuterAlt(localctx, 1)
-            self.state = 134
+            self.state = 138
             self.match(BenLangParser.LBRACKET)
-            self.state = 136
+            self.state = 140
             self._errHandler.sync(self)
             _la = self._input.LA(1)
             if (((_la) & ~0x3f) == 0 and ((1 << _la) & ((1 << BenLangParser.STRING) | (1 << BenLangParser.OP_NOT) | (1 << BenLangParser.FALSE) | (1 << BenLangParser.TRUE) | (1 << BenLangParser.IDENTIFIER) | (1 << BenLangParser.LBRACKET) | (1 << BenLangParser.INTEGER) | (1 << BenLangParser.PLUS) | (1 << BenLangParser.MINUS))) != 0):
-                self.state = 135
+                self.state = 139
                 self.expr(0)
 
 
-            self.state = 138
+            self.state = 142
             self.paramsRest()
         except RecognitionException as re:
             localctx.exception = re
@@ -1173,23 +1233,23 @@ class BenLangParser ( Parser ):
     def paramsRest(self):
 
         localctx = BenLangParser.ParamsRestContext(self, self._ctx, self.state)
-        self.enterRule(localctx, 22, self.RULE_paramsRest)
+        self.enterRule(localctx, 24, self.RULE_paramsRest)
         try:
-            self.state = 145
+            self.state = 149
             self._errHandler.sync(self)
             token = self._input.LA(1)
             if token in [BenLangParser.COMMA]:
                 self.enterOuterAlt(localctx, 1)
-                self.state = 140
+                self.state = 144
                 self.match(BenLangParser.COMMA)
-                self.state = 141
+                self.state = 145
                 self.expr(0)
-                self.state = 142
+                self.state = 146
                 self.paramsRest()
                 pass
             elif token in [BenLangParser.RBRACKET]:
                 self.enterOuterAlt(localctx, 2)
-                self.state = 144
+                self.state = 148
                 self.match(BenLangParser.RBRACKET)
                 pass
             else:
@@ -1208,7 +1268,7 @@ class BenLangParser ( Parser ):
     def sempred(self, localctx:RuleContext, ruleIndex:int, predIndex:int):
         if self._predicates == None:
             self._predicates = dict()
-        self._predicates[8] = self.expr_sempred
+        self._predicates[9] = self.expr_sempred
         pred = self._predicates.get(ruleIndex, None)
         if pred is None:
             raise Exception("No predicate with index:" + str(ruleIndex))

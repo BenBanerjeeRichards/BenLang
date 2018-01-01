@@ -35,6 +35,15 @@ class BenLangListener(ParseTreeListener):
         pass
 
 
+    # Enter a parse tree produced by BenLangParser#aType.
+    def enterAType(self, ctx:BenLangParser.ATypeContext):
+        pass
+
+    # Exit a parse tree produced by BenLangParser#aType.
+    def exitAType(self, ctx:BenLangParser.ATypeContext):
+        pass
+
+
     # Enter a parse tree produced by BenLangParser#declaration.
     def enterDeclaration(self, ctx:BenLangParser.DeclarationContext):
         pass

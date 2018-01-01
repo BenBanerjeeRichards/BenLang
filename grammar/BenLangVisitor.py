@@ -24,6 +24,11 @@ class BenLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
+    # Visit a parse tree produced by BenLangParser#aType.
+    def visitAType(self, ctx:BenLangParser.ATypeContext):
+        return self.visitChildren(ctx)
+
+
     # Visit a parse tree produced by BenLangParser#declaration.
     def visitDeclaration(self, ctx:BenLangParser.DeclarationContext):
         return self.visitChildren(ctx)

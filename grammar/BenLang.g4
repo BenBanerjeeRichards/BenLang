@@ -8,8 +8,9 @@ statement: 	expr SEMICOLON
 
 statementBlock: statement*;
 prog:		statementBlock;
+aType: 		BOOL_TYPE | STRING_TYPE | INT_TYPE;
 
-declaration: TYPE IDENTIFIER EQUALS expr;
+declaration: aType IDENTIFIER EQUALS expr;
 assignment: IDENTIFIER EQUALS expr;
 
 whileLoop: 		WHILE LBRACKET expr RBRACKET LMOUSTACHE statementBlock RMOUSTACHE;
@@ -40,7 +41,6 @@ STRING:  QUOT STRING_CHAR* QUOT;
 ESCAPE_CHAR: '\n' | '\r';
 QUOT:		 '"';
 BACKSLASH:   '\\';
-TYPE: 		BOOL_TYPE | STRING_TYPE | INT_TYPE;
 BOOL_TYPE: 		 'bool';
 INT_TYPE: 		 'int';
 STRING_TYPE: 'string';

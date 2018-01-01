@@ -47,7 +47,19 @@ def get_start_stop_pos(root):
 
 
 def to_ast(root):
+    if is_terminal(root):
+        position = FilePosition(root.symbol.line, root.symbol.column, root.symbol.tokenIndex)
+        if root.symbol.type == BenLangLexer.BOOL_TYPE:
+            return BoolTypeNode(position)
+        if root.symbol.type == BenLangLexer.STRING_TYPE:
+            return StringTypeNode(position)
+        if root.symbol.type == BenLangLexer.INT_TYPE:
+            return IntegerTypeNode(position)
+
     start_position, stop_position = get_start_stop_pos(root)
+
+    if isinstance(root, BenLangParser.ATypeContext):
+        return to_ast(root.children[0])
 
     if isinstance(root, BenLangParser.ProgContext):
         return ProgramNode(to_ast(root.children[0]), start_position, stop_position)
@@ -82,6 +94,18 @@ def to_ast(root):
         statements_if = to_ast(root.children[5])
         statements_else = to_ast(root.children[9])
         return IfElseNode(condition, statements_if, statements_else, start_position, stop_position)
+
+    if isinstance(root, BenLangParser.DeclarationContext):
+        assert len(root.children) == 4;
+        type = to_ast(root.children[0])
+        identifier = expression_to_ast(root.children[1])
+        rhs = to_ast(root.children[3])
+        return DeclarationNode(type, identifier, rhs, start_position, stop_position)
+
+    if isinstance(root, BenLangParser.AssignmentContext):
+        identifier = expression_to_ast(root.children[0])
+        rhs = to_ast(root.children[2])
+        return AssignmentNode(identifier, rhs, start_position, stop_position)
 
 
 

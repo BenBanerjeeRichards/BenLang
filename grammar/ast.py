@@ -150,48 +150,6 @@ class ApplicationNode(Node):
         return "{}()".format(self._function_name)
 
 
-class AbstractStatementNode(Node):
-
-    def __init__(self, node: Node, start_position: FilePosition, stop_position: FilePosition):
-        super().__init__([node], start_position, stop_position)
-
-
-class ExprStatementNode(AbstractStatementNode):
-
-    def __str__(self):
-        return "expr"
-
-
-class IfOnlyStatementNode(AbstractStatementNode):
-
-    def __str__(self):
-        return "if"
-
-
-class IfElseStatementNode(AbstractStatementNode):
-
-    def __str__(self):
-        return "if/else"
-
-
-class WhileStatementNode(AbstractStatementNode):
-
-    def __str__(self):
-        return "while"
-
-
-class DeclarationStatementNode(AbstractStatementNode):
-
-    def __str__(self):
-        return "decl"
-
-
-class AssignmentStatementNode(AbstractStatementNode):
-
-    def __str__(self):
-        return "assign"
-
-
 class StatementNode(Node):
 
     def __init__(self, node, start_position: FilePosition, stop_position: FilePosition):
@@ -212,7 +170,7 @@ class StatementBlockNode(Node):
 
 class WhileNode(Node):
 
-    def __init__(self, condition: ExprStatementNode, statements: StatementBlockNode, start_position: FilePosition, stop_position: FilePosition):
+    def __init__(self, condition, statements: StatementBlockNode, start_position: FilePosition, stop_position: FilePosition):
         super().__init__([condition, statements], start_position, stop_position)
         self.condition = condition
         self.statements = statements
@@ -251,3 +209,42 @@ class ProgramNode(Node):
 
     def __str__(self):
         return "program"
+
+
+class DeclarationNode(Node):
+
+    def __init__(self, type, identifier, rhs, start_position: FilePosition, stop_position: FilePosition):
+        super().__init__([type, identifier, rhs], start_position, stop_position)
+
+    def __str__(self):
+        return "decl"
+
+
+class AssignmentNode(Node):
+
+    def __init__(self, identifier, rhs, start_position: FilePosition, stop_position: FilePosition):
+        super().__init__([identifier, rhs], start_position, stop_position)
+
+    def __str__(self):
+        return "assign"
+
+
+class AbstractTypeNode(Node):
+
+    def __init__(self, start_position: FilePosition):
+        super().__init__([], start_position, start_position)
+
+
+class IntegerTypeNode(AbstractTypeNode):
+    def __str__(self):
+        return "int"
+
+
+class StringTypeNode(AbstractTypeNode):
+    def __str__(self):
+        return "string"
+
+
+class BoolTypeNode(AbstractTypeNode):
+    def __str__(self):
+        return "bool"
