@@ -42,17 +42,7 @@ def is_terminal(x):
 def expression_to_ast(root : BenLangParser.StatementContext):
     if is_terminal(root):
         # Values
-        position = FilePosition(root.symbol.line, root.symbol.column, root.symbol.tokenIndex)
-        if root.symbol.type == BenLangLexer.INTEGER:
-            return IntNode(root.symbol.text, position)
-        if root.symbol.type == BenLangLexer.FALSE:
-            return FalseNode(position)
-        if root.symbol.type == BenLangLexer.TRUE:
-            return TrueNode(position)
-        if root.symbol.type == BenLangParser.IDENTIFIER:
-            return IdentifierNode(root.symbol.text, position)
-        if root.symbol.type == BenLangParser.STRING:
-            return StringNode(root.symbol.text, position)
+        return get_expression_value(root)
 
     start_position = FilePosition(root.start.line, root.start.column, root.start.tokenIndex)
     stop_position = FilePosition(root.stop.line, root.stop.column, root.stop.tokenIndex)
@@ -93,16 +83,8 @@ def expression_to_ast(root : BenLangParser.StatementContext):
 
     if len(root.children) == 2:
         # unary operators
-        sym = root.children[0].symbol.type
-        if sym == BenLangLexer.MINUS:
-            return MinusOperation(expression_to_ast(root.children[1]), start_position, stop_position)
-
-        if sym == BenLangLexer.PLUS:
-            # Useless, we can discard it
-            return expression_to_ast(root.children[1])
-
-        if sym == BenLangLexer.OP_NOT:
-            return NotOperation(expression_to_ast(root.children[1]), start_position, stop_position)
+        operand = expression_to_ast(root.children[1])
+        get_expression_unary_ast(root, operand, start_position, stop_position)
 
     if len(root.children) == 3:
         # Binary operators (two operands)
@@ -112,24 +94,54 @@ def expression_to_ast(root : BenLangParser.StatementContext):
         operator = root.children[1].symbol.type
         lhs = expression_to_ast(root.children[0])
         rhs = expression_to_ast(root.children[2])
-        if operator == BenLangLexer.PLUS:
-            return AdditionNode(lhs, rhs, start_position, stop_position)
-        if operator == BenLangLexer.MULT:
-            return MultiplicationNode(lhs, rhs, start_position, stop_position)
-        if operator == BenLangLexer.DIV:
-            return DivisionNode(lhs, rhs, start_position, stop_position)
-        if operator == BenLangLexer.MINUS:
-            return SubtractionNode(lhs, rhs, start_position, stop_position)
-        if operator == BenLangLexer.OP_AND:
-            return AndNode(lhs, rhs, start_position, stop_position)
-        if operator == BenLangLexer.OP_OR:
-            return OrNode(lhs, rhs, start_position, stop_position)
-        if operator == BenLangLexer.OP_EQ:
-            return OpEqualsNode(lhs, rhs, start_position, stop_position)
-        if operator == BenLangLexer.OP_LT:
-            return OpLessThanNode(lhs, rhs, start_position, stop_position)
+        return get_expression_binary_ast(operator, lhs, rhs, start_position, stop_position)
+    raise NotImplemented()
 
-        raise NotImplemented()
+
+def get_expression_unary_ast(root, operand, start_position, stop_position):
+    sym = root.children[0].symbol.type
+    if sym == BenLangLexer.MINUS:
+        return MinusOperation(operand, start_position, stop_position)
+
+    if sym == BenLangLexer.PLUS:
+        # Useless, we can discard it
+        return operand
+
+    if sym == BenLangLexer.OP_NOT:
+        return NotOperation(operand, start_position, stop_position)
+
+
+def get_expression_value(root):
+    position = FilePosition(root.symbol.line, root.symbol.column, root.symbol.tokenIndex)
+    if root.symbol.type == BenLangLexer.INTEGER:
+        return IntNode(root.symbol.text, position)
+    if root.symbol.type == BenLangLexer.FALSE:
+        return FalseNode(position)
+    if root.symbol.type == BenLangLexer.TRUE:
+        return TrueNode(position)
+    if root.symbol.type == BenLangParser.IDENTIFIER:
+        return IdentifierNode(root.symbol.text, position)
+    if root.symbol.type == BenLangParser.STRING:
+        return StringNode(root.symbol.text, position)
+
+
+def get_expression_binary_ast(operator, lhs, rhs, start_position, stop_position):
+    if operator == BenLangLexer.PLUS:
+        return AdditionNode(lhs, rhs, start_position, stop_position)
+    if operator == BenLangLexer.MULT:
+        return MultiplicationNode(lhs, rhs, start_position, stop_position)
+    if operator == BenLangLexer.DIV:
+        return DivisionNode(lhs, rhs, start_position, stop_position)
+    if operator == BenLangLexer.MINUS:
+        return SubtractionNode(lhs, rhs, start_position, stop_position)
+    if operator == BenLangLexer.OP_AND:
+        return AndNode(lhs, rhs, start_position, stop_position)
+    if operator == BenLangLexer.OP_OR:
+        return OrNode(lhs, rhs, start_position, stop_position)
+    if operator == BenLangLexer.OP_EQ:
+        return OpEqualsNode(lhs, rhs, start_position, stop_position)
+    if operator == BenLangLexer.OP_LT:
+        return OpLessThanNode(lhs, rhs, start_position, stop_position)
 
 
 def graphviz(t, is_root_node, node_text, get_children, relations=[], labels={}, node_key=0):

@@ -148,3 +148,72 @@ class ApplicationNode(Node):
 
     def __str__(self):
         return "{}()".format(self._function_name)
+
+
+class AbstractStatementNode(Node):
+
+    def __init__(self, node: Node, start_position: FilePosition, stop_position: FilePosition):
+        super().__init__([node], start_position, stop_position)
+
+
+class ExprStatementNode(AbstractStatementNode):
+
+    def __str__(self):
+        return "expr"
+
+
+class IfOnlyStatementNode(AbstractStatementNode):
+
+    def __str__(self):
+        return "if"
+
+
+class IfElseStatementNode(AbstractStatementNode):
+
+    def __str__(self):
+        return "if/else"
+
+
+class WhileStatementNode(AbstractStatementNode):
+
+    def __str__(self):
+        return "while"
+
+
+class DeclarationStatementNode(AbstractStatementNode):
+
+    def __str__(self):
+        return "decl"
+
+
+class AssignmentStatementNode(AbstractStatementNode):
+
+    def __str__(self):
+        return "assign"
+
+
+class StatementNode(Node):
+
+    def __init__(self, node, start_position: FilePosition, stop_position: FilePosition):
+        super().__init__([node], start_position, stop_position)
+
+    def __str__(self):
+        return "stmt"
+
+
+class StatementBlockNode(Node):
+
+    def __init__(self, statements, start_position: FilePosition, stop_position: FilePosition):
+        super().__init__(statements, start_position, stop_position)
+
+    def __str__(self):
+        return "stmts"
+
+
+class ProgramNode(Node):
+
+    def __init__(self, block, start_position: FilePosition, stop_position: FilePosition):
+        super().__init__([block], start_position, stop_position)
+
+    def __str__(self):
+        return "program"

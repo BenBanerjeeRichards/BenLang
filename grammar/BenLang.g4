@@ -6,13 +6,11 @@ statement: 	expr SEMICOLON
 		  | declaration SEMICOLON
 		  | assignment SEMICOLON;
 
-expression: expr | STRING;
-
 statementBlock: statement*;
 prog:		statementBlock;
 
-declaration: TYPE IDENTIFIER EQUALS expression;
-assignment: IDENTIFIER EQUALS expression;
+declaration: TYPE IDENTIFIER EQUALS expr;
+assignment: IDENTIFIER EQUALS expr;
 
 whileLoop: 		WHILE LBRACKET expr RBRACKET LMOUSTACHE statementBlock RMOUSTACHE;
 ifElse:     	IF LBRACKET expr RBRACKET LMOUSTACHE statementBlock RMOUSTACHE ELSE LMOUSTACHE statementBlock RMOUSTACHE;
@@ -34,8 +32,8 @@ expr: TRUE | FALSE | IDENTIFIER | application | INTEGER  | STRING
 
 
 application: IDENTIFIER params;
-params: LBRACKET expression? paramsRest;
-paramsRest: COMMA expression paramsRest | RBRACKET;
+params: LBRACKET expr? paramsRest;
+paramsRest: COMMA expr paramsRest | RBRACKET;
 
 EQUALS: '=';
 STRING:  QUOT STRING_CHAR* QUOT;

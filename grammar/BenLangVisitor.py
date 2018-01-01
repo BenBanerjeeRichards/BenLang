@@ -14,11 +14,6 @@ class BenLangVisitor(ParseTreeVisitor):
         return self.visitChildren(ctx)
 
 
-    # Visit a parse tree produced by BenLangParser#expression.
-    def visitExpression(self, ctx:BenLangParser.ExpressionContext):
-        return self.visitChildren(ctx)
-
-
     # Visit a parse tree produced by BenLangParser#statementBlock.
     def visitStatementBlock(self, ctx:BenLangParser.StatementBlockContext):
         return self.visitChildren(ctx)

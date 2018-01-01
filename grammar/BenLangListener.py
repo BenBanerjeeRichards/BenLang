@@ -17,15 +17,6 @@ class BenLangListener(ParseTreeListener):
         pass
 
 
-    # Enter a parse tree produced by BenLangParser#expression.
-    def enterExpression(self, ctx:BenLangParser.ExpressionContext):
-        pass
-
-    # Exit a parse tree produced by BenLangParser#expression.
-    def exitExpression(self, ctx:BenLangParser.ExpressionContext):
-        pass
-
-
     # Enter a parse tree produced by BenLangParser#statementBlock.
     def enterStatementBlock(self, ctx:BenLangParser.StatementBlockContext):
         pass
