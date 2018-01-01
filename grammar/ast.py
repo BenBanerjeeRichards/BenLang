@@ -56,12 +56,22 @@ class IdentifierNode(Node):
         return self._ident
 
 
+class StringNode(Node):
+    def __init__(self, string : str, position : FilePosition):
+        super().__init__([], position, position)
+        self.string = string
+
+    def __str__(self):
+        return "\"{}\"".format(self.string)
+
+
 class ParamsNode(Node):
     def __init__(self, params: [Node], start_position: FilePosition, stop_position: FilePosition):
         super().__init__(params, start_position, stop_position)
 
     def __str__(self):
         return "Params"
+
 
 class AbstractBinaryOpNode(Node):
     def __init__(self, left: Node, right: Node, start: FilePosition, stop: FilePosition):
@@ -117,6 +127,16 @@ class AndNode(AbstractBinaryOpNode):
 class OrNode(AbstractBinaryOpNode):
     def __str__(self):
         return "||"
+
+
+class OpEqualsNode(AbstractBinaryOpNode):
+    def __str__(self):
+        return "=="
+
+
+class OpLessThanNode(AbstractBinaryOpNode):
+    def __str__(self):
+        return "<"
 
 
 class ApplicationNode(Node):

@@ -51,6 +51,8 @@ def expression_to_ast(root : BenLangParser.StatementContext):
             return TrueNode(position)
         if root.symbol.type == BenLangParser.IDENTIFIER:
             return IdentifierNode(root.symbol.text, position)
+        if root.symbol.type == BenLangParser.STRING:
+            return StringNode(root.symbol.text, position)
 
     start_position = FilePosition(root.start.line, root.start.column, root.start.tokenIndex)
     stop_position = FilePosition(root.stop.line, root.stop.column, root.stop.tokenIndex)
@@ -122,6 +124,10 @@ def expression_to_ast(root : BenLangParser.StatementContext):
             return AndNode(lhs, rhs, start_position, stop_position)
         if operator == BenLangLexer.OP_OR:
             return OrNode(lhs, rhs, start_position, stop_position)
+        if operator == BenLangLexer.OP_EQ:
+            return OpEqualsNode(lhs, rhs, start_position, stop_position)
+        if operator == BenLangLexer.OP_LT:
+            return OpLessThanNode(lhs, rhs, start_position, stop_position)
 
         raise NotImplemented()
 
@@ -129,7 +135,7 @@ def expression_to_ast(root : BenLangParser.StatementContext):
 def graphviz(t, is_root_node, node_text, get_children, relations=[], labels={}, node_key=0):
     child_key = node_key
 
-    labels[node_key] = node_text(t)
+    labels[node_key] = sanitize_graphviz_label(node_text(t))
 
     if is_root_node(t):
         return node_key, relations, labels
@@ -160,13 +166,16 @@ def ctx_text(ctx, symbolic_names):
         text = re.sub(pattern, '', ctx.symbol.text)
 
         if len(text) > 0:
-            text = "{}({})".format(symbolic_names[ctx.symbol.type], text)
+            return "{}({})".format(symbolic_names[ctx.symbol.type], text)
         else:
-            text = "{}".format(text)
+            return "{}".format(text)
 
-        return text.replace("\"", "\\\"")
     else:
         return ctx.__class__.__name__.replace("Context", "")
+
+
+def sanitize_graphviz_label(text):
+    return text.replace("\"", "\\\"")
 
 
 def draw_syntax_tree(theTree, symbolic_names):
