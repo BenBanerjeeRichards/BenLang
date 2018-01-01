@@ -41,47 +41,87 @@ def is_terminal(x):
 
 def expression_to_ast(root : BenLangParser.StatementContext):
     if is_terminal(root):
-        # Reached value
+        # Values
+        position = FilePosition(root.symbol.line, root.symbol.column, root.symbol.tokenIndex)
         if root.symbol.type == BenLangLexer.INTEGER:
-            return IntNode(root.symbol.text)
+            return IntNode(root.symbol.text, position)
         if root.symbol.type == BenLangLexer.FALSE:
-            return FalseNode()
+            return FalseNode(position)
         if root.symbol.type == BenLangLexer.TRUE:
-            return TrueNode()
+            return TrueNode(position)
+        if root.symbol.type == BenLangParser.IDENTIFIER:
+            return IdentifierNode(root.symbol.text, position)
+
+    start_position = FilePosition(root.start.line, root.start.column, root.start.tokenIndex)
+    stop_position = FilePosition(root.stop.line, root.stop.column, root.stop.tokenIndex)
+
+    if isinstance(root, BenLangParser.ApplicationContext):
+        func_name = expression_to_ast(root.children[0])
+        # If expression exists in Params, if it doesn't then no parameters passed (note optional expression)
+        # params: LBRACKET expression? paramsRest;
+        params = []
+        if len(root.children[1].children) > 2:
+            params = expression_to_ast(root.children[1]).get_children()
+        return ApplicationNode(func_name, params, start_position, stop_position)
+
+    if isinstance(root, BenLangParser.ParamsRestContext):
+        assert len(root.children) == 3
+        param = expression_to_ast(root.children[1])
+
+        if len(root.children[2].children) == 1:
+            # No more parameters
+            return ParamsNode([param], start_position, stop_position)
+
+        params = expression_to_ast(root.children[2])
+        return ParamsNode([param] + params.get_children(), start_position, stop_position)
+
+    if isinstance(root, BenLangParser.ParamsContext):
+        assert len(root.children) == 3
+        ps = []
+        ps.append(expression_to_ast(root.children[1]))
+
+        if len(root.children[2].children) == 3:
+            ps = ps + expression_to_ast(root.children[2]).get_children()
+
+        return ParamsNode(ps, start_position, stop_position)
 
     if len(root.children) == 1:
+        # Terminals
         return expression_to_ast(root.children[0])
 
     if len(root.children) == 2:
         # unary operators
         sym = root.children[0].symbol.type
         if sym == BenLangLexer.MINUS:
-            return MinusOperation(expression_to_ast(root.children[1]))
+            return MinusOperation(expression_to_ast(root.children[1]), start_position, stop_position)
 
         if sym == BenLangLexer.PLUS:
             # Useless, we can discard it
             return expression_to_ast(root.children[1])
 
         if sym == BenLangLexer.OP_NOT:
-            return NotOperation(expression_to_ast(root.children[1]))
+            return NotOperation(expression_to_ast(root.children[1]), start_position, stop_position)
 
     if len(root.children) == 3:
+        # Binary operators (two operands)
         if is_terminal(root.children[0]) and is_terminal(root.children[2]):
             return expression_to_ast(root.children[1])
 
         operator = root.children[1].symbol.type
+        lhs = expression_to_ast(root.children[0])
+        rhs = expression_to_ast(root.children[2])
         if operator == BenLangLexer.PLUS:
-            return AdditionNode(expression_to_ast(root.children[0]), expression_to_ast(root.children[2]))
+            return AdditionNode(lhs, rhs, start_position, stop_position)
         if operator == BenLangLexer.MULT:
-            return MultiplicationNode(expression_to_ast(root.children[0]), expression_to_ast(root.children[2]))
+            return MultiplicationNode(lhs, rhs, start_position, stop_position)
         if operator == BenLangLexer.DIV:
-            return DivisionNode(expression_to_ast(root.children[0]), expression_to_ast(root.children[2]))
+            return DivisionNode(lhs, rhs, start_position, stop_position)
         if operator == BenLangLexer.MINUS:
-            return SubtractionNode(expression_to_ast(root.children[0]), expression_to_ast(root.children[2]))
+            return SubtractionNode(lhs, rhs, start_position, stop_position)
         if operator == BenLangLexer.OP_AND:
-            return AndNode(expression_to_ast(root.children[0]), expression_to_ast(root.children[2]))
+            return AndNode(lhs, rhs, start_position, stop_position)
         if operator == BenLangLexer.OP_OR:
-            return OrNode(expression_to_ast(root.children[0]), expression_to_ast(root.children[2]))
+            return OrNode(lhs, rhs, start_position, stop_position)
 
         raise NotImplemented()
 
