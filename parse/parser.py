@@ -4,37 +4,7 @@ from BenLangVisitor import BenLangVisitor
 from BenLangParser import BenLangParser
 import sys
 import re
-from grammar.ast import *
-
-def prop_print(obj, sep):
-    print(sep.join("%s: %s" % item for item in vars(obj).items()))
-
-
-class BenLangPrintVisitor(BenLangVisitor):
-
-    def enterEveryRule(self, ctx):
-        pass
-        # print("enter: {}".format(ctx.__class__.__name__))
-
-    def exitEveryRule(self, ctx):
-        pass
-        # print("exit: {}".format(ctx.__class__.__name__) )
-
-    def visitStatement(self, ctx):
-        return self.visitChildren(ctx);
-
-    def visitProg(self, ctx):
-        print("IT BEGINS (visit prog)")
-        return self.visitChildren(ctx)
-
-    def visitTerminal(self, ctx):
-        return ctx.symbol
-
-    def visitExpr(self, ctx):
-        return
-        x = expression_to_ast(ctx)
-        draw_ast(x)
-
+from parse.ast import *
 
 def is_terminal(x):
     return isinstance(x, tree.Tree.TerminalNodeImpl)
@@ -153,7 +123,7 @@ def expression_to_ast(root : BenLangParser.StatementContext):
     if len(root.children) == 2:
         # unary operators
         operand = expression_to_ast(root.children[1])
-        get_expression_unary_ast(root, operand, start_position, stop_position)
+        return get_expression_unary_ast(root, operand, start_position, stop_position)
 
     if len(root.children) == 3:
         # Binary operators (two operands)
@@ -285,12 +255,6 @@ def main(argv):
 
     #draw_syntax_tree(tree, BenLangLexer.symbolicNames)
 
-    printer = BenLangPrintVisitor()
-    printer.visit(tree)
-
-
-# walker = ParseTreeWalker()
-# walker.walk(printer, tree)
 
 if __name__ == '__main__':
     main(sys.argv)

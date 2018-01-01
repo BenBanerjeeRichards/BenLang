@@ -1,2 +1,9 @@
-int x = 34 * 3;
-x = sin(x) * 2;
+outputStr("Enter input> ");
+outputStr(input());
+outputStr("\n");
+
+outputInt(34);
+outputBool(false);
+outputBool(true);
+
+outputInt(stringToInt("34"));
