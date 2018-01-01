@@ -210,6 +210,40 @@ class StatementBlockNode(Node):
         return "stmts"
 
 
+class WhileNode(Node):
+
+    def __init__(self, condition: ExprStatementNode, statements: StatementBlockNode, start_position: FilePosition, stop_position: FilePosition):
+        super().__init__([condition, statements], start_position, stop_position)
+        self.condition = condition
+        self.statements = statements
+
+    def __str__(self):
+        return "while"
+
+
+class IfOnlyNode(Node):
+
+    def __init__(self, condition, statements, start_position: FilePosition, stop_position: FilePosition):
+        super().__init__([condition, statements], start_position, stop_position)
+        self.condition = condition
+        self.statements = statements
+
+    def __str__(self):
+        return "if"
+
+
+class IfElseNode(Node):
+
+    def __init__(self, condition, statements_if, statements_else, start_position: FilePosition, stop_position: FilePosition):
+        super().__init__([condition, statements_if, statements_else], start_position, stop_position)
+        self.condition = condition
+        self.statement_if = statements_if
+        self.statements_else = statements_else
+
+    def __str__(self):
+        return "ifelse"
+
+
 class ProgramNode(Node):
 
     def __init__(self, block, start_position: FilePosition, stop_position: FilePosition):

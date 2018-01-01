@@ -31,6 +31,7 @@ class BenLangPrintVisitor(BenLangVisitor):
         return ctx.symbol
 
     def visitExpr(self, ctx):
+        return
         x = expression_to_ast(ctx)
         draw_ast(x)
 
@@ -39,13 +40,57 @@ def is_terminal(x):
     return isinstance(x, tree.Tree.TerminalNodeImpl)
 
 
+def get_start_stop_pos(root):
+    start_position = FilePosition(root.start.line, root.start.column, root.start.tokenIndex)
+    stop_position = FilePosition(root.stop.line, root.stop.column, root.stop.tokenIndex)
+    return start_position, stop_position
+
+
+def to_ast(root):
+    start_position, stop_position = get_start_stop_pos(root)
+
+    if isinstance(root, BenLangParser.ProgContext):
+        return ProgramNode(to_ast(root.children[0]), start_position, stop_position)
+
+    if isinstance(root, BenLangParser.StatementBlockContext):
+        statements = []
+        for s in root.children:
+            statements.append(to_ast(s))
+        return StatementBlockNode(statements, start_position, stop_position)
+
+    if isinstance(root, BenLangParser.StatementContext):
+        return to_ast(root.children[0])    # Ignore semicolon if exists
+
+    if isinstance(root, BenLangParser.WhileLoopContext):
+        assert len(root.children) == 7
+        condition = to_ast(root.children[2])
+        statements = to_ast(root.children[5])
+        return WhileNode(condition, statements, start_position, stop_position)
+
+    if isinstance(root, BenLangParser.ExprContext):
+        return expression_to_ast(root)
+
+    if isinstance(root, BenLangParser.IfOnlyContext):
+        assert len(root.children) == 7
+        condition = to_ast(root.children[2])
+        statements = to_ast(root.children[5])
+        return IfOnlyNode(condition, statements, start_position, stop_position)
+
+    if isinstance(root, BenLangParser.IfElseContext):
+        assert len(root.children) == 11
+        condition = to_ast(root.children[2])
+        statements_if = to_ast(root.children[5])
+        statements_else = to_ast(root.children[9])
+        return IfElseNode(condition, statements_if, statements_else, start_position, stop_position)
+
+
+
 def expression_to_ast(root : BenLangParser.StatementContext):
     if is_terminal(root):
         # Values
         return get_expression_value(root)
 
-    start_position = FilePosition(root.start.line, root.start.column, root.start.tokenIndex)
-    stop_position = FilePosition(root.stop.line, root.stop.column, root.stop.tokenIndex)
+    start_position, stop_position = get_start_stop_pos(root)
 
     if isinstance(root, BenLangParser.ApplicationContext):
         func_name = expression_to_ast(root.children[0])
@@ -211,6 +256,9 @@ def main(argv):
     stream = CommonTokenStream(lexer)
     parser = BenLangParser(stream)
     tree = parser.prog()
+    x = to_ast(tree)
+    draw_ast(x)
+
     #draw_syntax_tree(tree, BenLangLexer.symbolicNames)
 
     printer = BenLangPrintVisitor()

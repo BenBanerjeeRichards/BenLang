@@ -1,1 +1,6 @@
-34 * 3 + function(23, sin(3 * pi));
+if (x < 9 && false) {
+	x * 3;
+} else {
+	y * 2;
+}
+
