@@ -87,13 +87,20 @@ class Environment:
             return Type.BOOL
         if isinstance(root, StringNode):
             return Type.STRING
-        if instance_of_one(root, [AdditionNode, SubtractionNode, MultiplicationNode, DivisionNode, OpLessThanNode]):
+        if instance_of_one(root, [AdditionNode, SubtractionNode, MultiplicationNode, DivisionNode]):
             left = self.get_type(root.left)
             right = self.get_type(root.right)
             if not (left == Type.INT and right == Type.INT):
                 error(root, "Type error: expected integer operands, but got {} and {}"
                       .format(Type.type_to_string(left), Type.type_to_string(right)))
-            return left
+            return Type.INT
+        if isinstance(root, OpLessThanNode):
+            left = self.get_type(root.left)
+            right = self.get_type(root.right)
+            if not (left == Type.INT and right == Type.INT):
+                error(root, "Type error: expected integer operands to <, but got {} and {}"
+                      .format(Type.type_to_string(left), Type.type_to_string(right)))
+            return Type.BOOL
         if instance_of_one(root, [AndNode, OrNode]):
             left = self.get_type(root.left)
             right = self.get_type(root.right)
@@ -174,7 +181,8 @@ def _do_check(root, env: Environment):
             var_type = Type().from_ast_node(root.type)
             rhs_type = env.get_type(root.rhs)
             if not rhs_type == var_type:
-                error(root, "Declaration has incorrect left and right types")
+                error(root, "Declaration has incorrect left and right types: left is {} but right is {}"
+                      .format(Type.type_to_string(var_type), Type.type_to_string(rhs_type)))
             env.add_variable(variable_identifier, var_type)
 
     elif isinstance(root, AssignmentNode):
@@ -185,6 +193,13 @@ def _do_check(root, env: Environment):
         else:
             if not env.get_type(root.rhs) == variable_type:
                 error(root, "Variable has different type to rhs")
+    elif isinstance(root, IfOnlyNode):
+        if env.get_type(root.condition) != Type.BOOL:
+            error(root, "Expected boolean condition in If condition")
+
+        env.add_scope()
+        _do_check(root.statements, env)
+        env.pop_scope()
     else:
         return env.get_type(root)
 
