@@ -69,7 +69,9 @@ class Environment:
         self.variables[-1][identifier] = type
 
     def get_function(self, identifier: str):
-        return self.functions[0][identifier]
+        if identifier in self.functions[0]:
+            return self.functions[0][identifier]
+        return None
 
     @staticmethod
     def _get_from_env(name, env: [dict]):
