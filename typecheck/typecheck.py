@@ -138,7 +138,7 @@ class Environment:
                 if p_type != actual_type:
                     error(root, "Parameter {} to function {} has incorrect type: expected {} but got {}"
                           .format(i + 1, identifier, Type.type_to_string(p_type), Type.type_to_string(actual_type)))
-
+            return func.return_type
 
 
 
@@ -199,6 +199,24 @@ def _do_check(root, env: Environment):
 
         env.add_scope()
         _do_check(root.statements, env)
+        env.pop_scope()
+    elif isinstance(root, WhileNode):
+        if env.get_type(root.condition) != Type.BOOL:
+            error(root, "Expected boolean condition in While condition")
+
+        env.add_scope()
+        _do_check(root.statements, env)
+        env.pop_scope()
+
+    elif isinstance(root, IfElseNode):
+        if env.get_type(root.condition) != Type.BOOL:
+            error(root, "Expected boolean condition in IfElse condition")
+
+        env.add_scope()
+        _do_check(root.statement_if, env)
+        env.pop_scope()
+        env.add_scope()
+        _do_check(root.statements_else, env)
         env.pop_scope()
     else:
         return env.get_type(root)
