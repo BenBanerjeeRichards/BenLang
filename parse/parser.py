@@ -1,9 +1,7 @@
 from antlr4 import *
-from BenLangLexer import BenLangLexer
-from BenLangParser import BenLangParser
-import sys
+from parse.BenLangParser import BenLangParser
+from parse.BenLangLexer import BenLangLexer
 from parse.ast import *
-from util.graph import draw_ast, draw_syntax_tree
 
 
 def is_terminal(x):
@@ -182,14 +180,8 @@ def get_expression_binary_ast(operator, lhs, rhs, start_position, stop_position)
         return OpLessThanNode(lhs, rhs, start_position, stop_position)
 
 
-def main(argv):
-    lexer = BenLangLexer(FileStream(argv[1]))
+def get_syntax_tree(source_file_name: str):
+    lexer = BenLangLexer(FileStream(source_file_name))
     stream = CommonTokenStream(lexer)
     parser = BenLangParser(stream)
-    tree = parser.prog()
-    x = to_ast(tree)
-    draw_ast(x)
-
-
-if __name__ == '__main__':
-    main(sys.argv)
+    return parser.prog()

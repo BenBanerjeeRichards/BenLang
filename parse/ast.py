@@ -50,10 +50,10 @@ class FalseNode(Node):
 class IdentifierNode(Node):
     def __init__(self, identifier, position : FilePosition):
         super().__init__([], position, position)
-        self._ident = identifier
+        self.identifier = identifier
 
     def __str__(self):
-        return self._ident
+        return self.identifier
 
 
 class StringNode(Node):
@@ -76,6 +76,8 @@ class ParamsNode(Node):
 class AbstractBinaryOpNode(Node):
     def __init__(self, left: Node, right: Node, start: FilePosition, stop: FilePosition):
         super().__init__([left, right], start, stop)
+        self.left = left
+        self.right = right
 
     def __str__(self):
         return ""
@@ -215,6 +217,9 @@ class DeclarationNode(Node):
 
     def __init__(self, type, identifier, rhs, start_position: FilePosition, stop_position: FilePosition):
         super().__init__([type, identifier, rhs], start_position, stop_position)
+        self.type = type
+        self.identifier = identifier
+        self.rhs = rhs
 
     def __str__(self):
         return "decl"
@@ -224,6 +229,8 @@ class AssignmentNode(Node):
 
     def __init__(self, identifier, rhs, start_position: FilePosition, stop_position: FilePosition):
         super().__init__([identifier, rhs], start_position, stop_position)
+        self.identifier = identifier
+        self.rhs = rhs
 
     def __str__(self):
         return "assign"

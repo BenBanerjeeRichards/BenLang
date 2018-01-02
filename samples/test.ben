@@ -1,1 +1,2 @@
-int x = 34;
+int y = 34;
+y = false;
