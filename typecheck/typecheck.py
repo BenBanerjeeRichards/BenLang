@@ -114,7 +114,7 @@ class Environment:
             if not left == right:
                 error(root, "Type error: expected operands of same type, but got {} and {}"
                       .format(Type.type_to_string(left), Type.type_to_string(right)))
-            return left
+            return Type.BOOL
         if isinstance(root, IdentifierNode):
             lookup_var = self.get_variable(get_identifier(root))
             if lookup_var is not None:
