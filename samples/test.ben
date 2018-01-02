@@ -1,2 +1,2 @@
-int y = 34;
-y = false;
+bool x = false;
+outputStr(x);

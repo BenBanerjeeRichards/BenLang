@@ -146,10 +146,11 @@ class ApplicationNode(Node):
     def __init__(self, function_name: Node, params: [Node], start_position: FilePosition,
                  stop_position: FilePosition):
         super().__init__(params, start_position, stop_position)
-        self._function_name = function_name
+        self.function_name = function_name
+        self.params = params
 
     def __str__(self):
-        return "{}()".format(self._function_name)
+        return "{}()".format(self.function_name)
 
 
 class StatementNode(Node):

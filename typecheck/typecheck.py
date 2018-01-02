@@ -19,6 +19,19 @@ class Type:
         if isinstance(node, BoolTypeNode):
             return self.BOOL
 
+    @staticmethod
+    def type_to_string(type: int):
+        if type == 1:
+            return "bool"
+        elif type == 2:
+            return "int"
+        elif type == 3:
+            return "string"
+        elif type == 4:
+            return "void"
+        else:
+            return "<unknown>"
+
 
 class FunctionType:
 
@@ -76,25 +89,48 @@ class Environment:
             left = self.get_type(root.left)
             right = self.get_type(root.right)
             if not (left == Type.INT and right == Type.INT):
-                error(root, "Type error: expected integer operands")
+                error(root, "Type error: expected integer operands, but got {} and {}"
+                      .format(Type.type_to_string(left), Type.type_to_string(right)))
             return left
         if instance_of_one(root, [AndNode, OrNode]):
             left = self.get_type(root.left)
             right = self.get_type(root.right)
             if not (left == Type.BOOL and right == Type.BOOL):
-                error(root, "Type error: expected boolean operands")
+                error(root, "Type error: expected boolean operands, but got {} and {}"
+                      .format(Type.type_to_string(left), Type.type_to_string(right)))
             return left
         if isinstance(root, OpEqualsNode):
             left = self.get_type(root.left)
             right = self.get_type(root.right)
             if not left == right:
-                error(root, "Type error: expected operands to equals to be of same type")
+                error(root, "Type error: expected operands of same type, but got {} and {}"
+                      .format(Type.type_to_string(left), Type.type_to_string(right)))
             return left
         if isinstance(root, IdentifierNode):
             lookup_var = self.get_variable(get_identifier(root))
             if lookup_var is not None:
                 return lookup_var
             error(root, "Variable {} used but not declared".format(get_identifier(root)))
+        if isinstance(root, ApplicationNode):
+            # First check function is defined
+            identifier = get_identifier(root.function_name)
+            func = self.get_function(identifier)
+            if func is None:
+                error(root, "Function {} not defined".format(identifier))
+
+            # Next check params
+            if len(root.params) != len(func.param_types):
+                error(root, "Function {} expected {} params, got {}"
+                      .format(identifier, len(root.params), len(func.param_types)))
+
+            # Now check type of each param
+            for i, p_type in enumerate(func.param_types):
+                actual_type = self.get_type(root.params[i])
+                if p_type != actual_type:
+                    error(root, "Parameter {} to function {} has incorrect type: expected {} but got {}"
+                          .format(i + 1, identifier, Type.type_to_string(p_type), Type.type_to_string(actual_type)))
+
+
 
 
 def instance_of_one(obj, types):
@@ -147,7 +183,6 @@ def _do_check(root, env: Environment):
         else:
             if not env.get_type(root.rhs) == variable_type:
                 error(root, "Variable has different type to rhs")
-
     else:
         return env.get_type(root)
 
