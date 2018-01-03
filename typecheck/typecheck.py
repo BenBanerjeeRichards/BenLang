@@ -120,6 +120,19 @@ class Environment:
             if lookup_var is not None:
                 return lookup_var
             error(root, "Variable {} used but not declared".format(get_identifier(root)))
+        if isinstance(root, MinusOperation):
+            operand_type = self.get_type(root.operand)
+            if operand_type != Type.INT:
+                error(root, "Unary operation `-` expected integer operand but got {}"
+                      .format(Type.type_to_string(operand_type)))
+            return operand_type
+        if isinstance(root, NotOperation):
+            operand_type = self.get_type(root.operand)
+            if operand_type != Type.BOOL:
+                error(root, "Unary operation `!` expected boolean operand but got {}"
+                      .format(Type.type_to_string(operand_type)))
+            return operand_type
+
         if isinstance(root, ApplicationNode):
             # First check function is defined
             identifier = get_identifier(root.function_name)

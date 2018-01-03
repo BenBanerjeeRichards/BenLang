@@ -50,21 +50,26 @@ class IlGenerator:
             return MemoryOperand(memory_location)
 
         if isinstance(root, AdditionNode):
-            return self._arith_il(root, "+")
+            return self._binary_il(root, "+")
         if isinstance(root, MultiplicationNode):
-            return self._arith_il(root, "*")
+            return self._binary_il(root, "*")
         if isinstance(root, SubtractionNode):
-            return self._arith_il(root, "-")
+            return self._binary_il(root, "-")
         if isinstance(root, DivisionNode):
-            return self._arith_il(root, "/")
+            return self._binary_il(root, "/")
         if isinstance(root, AndNode):
-            return self._arith_il(root, "&&")
+            return self._binary_il(root, "&&")
         if isinstance(root, OrNode):
-            return self._arith_il(root, "||")
+            return self._binary_il(root, "||")
         if isinstance(root, OpEqualsNode):
-            return self._arith_il(root, "==")
+            return self._binary_il(root, "==")
         if isinstance(root, OpLessThanNode):
-            return self._arith_il(root, "<")
+            return self._binary_il(root, "<")
+
+        if isinstance(root, MinusOperation):
+            return self._unary_il(root, "-")
+        if isinstance(root, NotOperation):
+            return self._unary_il(root, "!")
 
         if isinstance(root, DeclarationNode):
             rhs = self.expression_to_il(root.rhs)
@@ -76,7 +81,15 @@ class IlGenerator:
             self.env.add_variable(root.identifier.identifier, self.memory_idx)
             return
 
-    def _arith_il(self, root: Node, operator: str):
+    def _unary_il(self, root: AbstractUnaryOpNode, operator: str):
+        rhs = self.expression_to_il(root.operand)
+        unary = UnaryIl(operator, rhs)
+        assignment = AssignmentIl(self._current_memory(), unary)
+        self._next_memory()
+        self._add_instruction(assignment)
+        return self._current_memory()
+
+    def _binary_il(self, root: Node, operator: str):
         lhs = self.expression_to_il(root.left)
         rhs = self.expression_to_il(root.right)
         addition = BinaryIl(lhs, operator, rhs)

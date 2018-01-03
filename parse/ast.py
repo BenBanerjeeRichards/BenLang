@@ -86,6 +86,7 @@ class AbstractBinaryOpNode(Node):
 class AbstractUnaryOpNode(Node):
     def __init__(self, operand: Node, start: FilePosition, stop: FilePosition):
         super().__init__([operand], start, stop)
+        self.operand = operand
 
     def __str__(self):
         return ""
