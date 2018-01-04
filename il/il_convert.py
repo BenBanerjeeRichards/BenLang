@@ -39,6 +39,12 @@ class IlGenerator:
     def _if_label_end(self, id: int):
         return "if_{}_end".format(id)
 
+    def _start_while(self, id: int):
+       return "while_{}_start".format(id)
+
+    def _end_while(self, id: int):
+       return "while_{}_end".format(id)
+
     def expression_to_il(self, root: Node):
         if isinstance(root, ProgramNode):
             self.expression_to_il(root.get_children()[0])
@@ -99,6 +105,20 @@ class IlGenerator:
             # Store memory location in variable
             self.env.add_variable(root.identifier.identifier, self.memory_idx)
             return
+
+        if isinstance(root, WhileNode):
+            self.while_label_idx += 1
+            start_label = self._start_while(self.while_label_idx)
+            end_label = self._end_while(self.while_label_idx)
+
+            # Negated condition
+            self.labels[len(self.instructions)] = start_label
+            negated_condition = NotOperation(root.condition, root.start_position, root.stop_position)
+            condition_loc = self.expression_to_il(negated_condition)
+            self._add_instruction(IfGotoIl(condition_loc, end_label))
+
+            self.expression_to_il(root.statements)
+            self.labels[len(self.instructions)] = end_label
 
     def _if_only_il(self, root: IfOnlyNode):
         self.if_label_idx += 1

@@ -1,4 +1,6 @@
-int x =34;
-if (x < 45) {
-	x = x + 12;
+int x = 3;
+while (true) {
+	 x + x + 34;
 }
+
+int z = 34;
