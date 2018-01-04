@@ -1,1 +1,4 @@
-int y = stringToInt("hello");
+int x =34;
+if (x < 45) {
+	x = x + 12;
+}

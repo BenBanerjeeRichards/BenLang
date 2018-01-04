@@ -28,7 +28,16 @@ class IlGenerator:
     def __init__(self):
         self.memory_idx = 0
         self.instructions = []
+        self.labels = {}        # Association between label id and instruction index (zero based)
         self.env = VariableEnvironment()
+        self.if_label_idx = 0
+        self.while_label_idx = 0
+
+    def _if_label_if(self, id: int):
+        return "if_{}_if".format(id)
+
+    def _if_label_end(self, id: int):
+        return "if_{}_end".format(id)
 
     def expression_to_il(self, root: Node):
         if isinstance(root, ProgramNode):
@@ -76,7 +85,44 @@ class IlGenerator:
         if isinstance(root, ApplicationNode):
             return self._function_call(root)
 
-        if isinstance(root, DeclarationNode):
+        if isinstance(root, IfElseNode):
+            self.if_label_idx += 1
+            idx = self.if_label_idx
+            if_label = self._if_label_if(idx)
+            end_label = self._if_label_end(idx)
+
+            # condition
+            result_location = self.expression_to_il(root.condition)
+            self._add_instruction(IfGotoIl(result_location, if_label))
+
+            # else body
+            self.expression_to_il(root.statements_else)
+            self._add_instruction(GotoIl(end_label))
+            self.labels[len(self.instructions)] = if_label
+
+            # if body
+            self.expression_to_il(root.statement_if)
+
+            # finally add end to next instruction
+            self.labels[len(self.instructions)] = end_label
+
+        if isinstance(root, IfOnlyNode):
+            self.if_label_idx += 1
+            idx = self.if_label_idx
+            end_label = self._if_label_end(idx)
+
+            # condition (then negated with not)
+            negated_condition = NotOperation(root.condition, root.start_position, root.stop_position)
+            condition_loc = self.expression_to_il(negated_condition)
+            self._add_instruction(IfGotoIl(condition_loc, end_label))
+
+            # If body
+            self.expression_to_il(root.statements)
+
+            # Add label
+            self.labels[len(self.instructions)] = end_label
+
+        if isinstance(root, DeclarationNode) or isinstance(root, AssignmentNode):
             rhs = self.expression_to_il(root.rhs)
 
             self._next_memory()
@@ -86,11 +132,13 @@ class IlGenerator:
             self.env.add_variable(root.identifier.identifier, self.memory_idx)
             return
 
+
     def _unary_il(self, root: AbstractUnaryOpNode, operator: str):
         rhs = self.expression_to_il(root.operand)
         unary = UnaryIl(operator, rhs)
-        assignment = AssignmentIl(self._current_memory(), unary)
         self._next_memory()
+
+        assignment = AssignmentIl(self._current_memory(), unary)
         self._add_instruction(assignment)
         return self._current_memory()
 

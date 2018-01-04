@@ -102,3 +102,22 @@ class PopParamIl:
 
     def __str__(self):
         return "pop"
+
+
+class IfGotoIl:
+
+    def __init__(self, condition, goto_label: str):
+        self.label = goto_label
+        self.condition = condition
+
+    def __str__(self):
+        return "if {} goto {}".format(self.condition, self.label)
+
+
+class GotoIl:
+
+    def __init__(self, label: str):
+        self.label = label
+
+    def __str__(self):
+        return "goto {}".format(self.label)
