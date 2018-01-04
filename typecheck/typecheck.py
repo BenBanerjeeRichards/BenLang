@@ -151,6 +151,8 @@ class Environment:
                 if p_type != actual_type:
                     error(root, "Parameter {} to function {} has incorrect type: expected {} but got {}"
                           .format(i + 1, identifier, Type.type_to_string(p_type), Type.type_to_string(actual_type)))
+            if func.return_type == Type.VOID:
+                root.is_void = True
             return func.return_type
 
 

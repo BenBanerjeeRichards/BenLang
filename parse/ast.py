@@ -144,11 +144,12 @@ class OpLessThanNode(AbstractBinaryOpNode):
 
 class ApplicationNode(Node):
 
-    def __init__(self, function_name: Node, params: [Node], start_position: FilePosition,
+    def __init__(self, function_name: Node, params: [Node], is_void: bool, start_position: FilePosition,
                  stop_position: FilePosition):
         super().__init__(params, start_position, stop_position)
         self.function_name = function_name
         self.params = params
+        self.is_void = is_void
 
     def __str__(self):
         return "{}()".format(self.function_name)

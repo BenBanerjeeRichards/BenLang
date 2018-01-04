@@ -14,6 +14,15 @@ class MemoryOperand(Operand):
         return "t{}".format(self.id)
 
 
+class StringOperand(Operand):
+    def __init__(self, value: str):
+        super().__init__()
+        self.value = value
+
+    def __str__(self):
+        return self.value
+
+
 class IntegerOperand(Operand):
 
     def __init__(self, value: int):
@@ -66,3 +75,30 @@ class AssignmentIl:
 
     def __str__(self):
         return "{} := {}".format(self.target, self.rhs)
+
+
+class PushParamIl:
+
+    def __init__(self, memory_location: int):
+        self.memory_location = memory_location
+
+    def __str__(self):
+        return "push t{}".format(self.memory_location)
+
+
+class FunctionCallIl:
+
+    def __init__(self, function_name: str):
+        self.function_name = function_name
+
+    def __str__(self):
+        return "call {}".format(self.function_name)
+
+
+class PopParamIl:
+
+    def __init__(self):
+        pass
+
+    def __str__(self):
+        return "pop"

@@ -90,7 +90,8 @@ def expression_to_ast(root: BenLangParser.StatementContext):
         params = []
         if len(root.children[1].children) > 2:
             params = expression_to_ast(root.children[1]).get_children()
-        return ApplicationNode(func_name, params, start_position, stop_position)
+        # Assume function is non-void for now
+        return ApplicationNode(func_name, params, False, start_position, stop_position)
 
     if isinstance(root, BenLangParser.ParamsRestContext):
         assert len(root.children) == 3

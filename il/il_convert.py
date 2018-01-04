@@ -44,6 +44,8 @@ class IlGenerator:
             return BoolOperand(True)
         if isinstance(root, FalseNode):
             return BoolOperand(False)
+        if isinstance(root, StringNode):
+            return StringOperand(root.string)
         if isinstance(root, IdentifierNode):
             memory_location = self.env.get_variable(root.identifier)
             assert memory_location is not None
@@ -71,6 +73,9 @@ class IlGenerator:
         if isinstance(root, NotOperation):
             return self._unary_il(root, "!")
 
+        if isinstance(root, ApplicationNode):
+            return self._function_call(root)
+
         if isinstance(root, DeclarationNode):
             rhs = self.expression_to_il(root.rhs)
 
@@ -97,6 +102,42 @@ class IlGenerator:
         assignment = AssignmentIl(self._current_memory(), addition)
         self._add_instruction(assignment)
         return self._current_memory()
+
+    def _function_call(self, root: ApplicationNode):
+        param_memory_locs = []
+        for param in root.params:
+            param_il = self.expression_to_il(param)
+            mem_loc = None
+            if not isinstance(param_il, MemoryOperand):
+                # Assign values to memory location (so they can be pushed onto the stack)
+                self._next_memory()
+                assignment = AssignmentIl(self._current_memory(), param_il)
+                self._add_instruction(assignment)
+                mem_loc = self._current_memory()
+            else:
+                mem_loc = param_il
+
+            param_memory_locs.append(mem_loc.id)
+
+        for location in param_memory_locs:
+            self._add_instruction(PushParamIl(location))
+
+        # Push function call
+        call = FunctionCallIl(root.function_name.identifier)
+
+        # If function is a non-void, assign value to memory location
+        ret = None
+        if not root.is_void:
+            self._next_memory()
+            self._add_instruction(AssignmentIl(self._current_memory(), call))
+            ret = self._current_memory()
+        else:
+            self._add_instruction(call)
+
+        # Pop parameters from stack
+        for i in range(len(root.params)):
+            self._add_instruction(PopParamIl())
+        return ret
 
     def _add_instruction(self, instruction):
         self.instructions.append(instruction)
