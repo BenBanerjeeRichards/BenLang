@@ -34,7 +34,8 @@ def to_ast(root):
 
     if isinstance(root, BenLangParser.StatementBlockContext):
         statements = []
-        for s in root.children:
+        children = [] if root.children is None else root.children
+        for s in children:
             statements.append(to_ast(s))
         return StatementBlockNode(statements, start_position, stop_position)
 

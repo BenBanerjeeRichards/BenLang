@@ -12,3 +12,9 @@ while (x < 0) {
 	x = x - 1;
 	outputInt(x);
 }
+
+if (x < 54) {
+	x = x + 3;
+} else {
+	x = 34;
+}

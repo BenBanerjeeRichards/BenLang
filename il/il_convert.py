@@ -112,13 +112,19 @@ class IlGenerator:
             end_label = self._end_while(self.while_label_idx)
 
             # Negated condition
-            self.labels[len(self.instructions)] = start_label
+            if len(self.instructions) in self.labels:
+                start_label = self.labels[len(self.instructions)]
+            else:
+                self.labels[len(self.instructions)] = start_label
+
             negated_condition = NotOperation(root.condition, root.start_position, root.stop_position)
             condition_loc = self.expression_to_il(negated_condition)
             self._add_instruction(IfGotoIl(condition_loc, end_label))
 
             self.expression_to_il(root.statements)
+            self._add_instruction(GotoIl(start_label))
             self.labels[len(self.instructions)] = end_label
+
 
     def _if_only_il(self, root: IfOnlyNode):
         self.if_label_idx += 1
