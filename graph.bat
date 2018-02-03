@@ -1,0 +1,1 @@
+dot -Tpng graphviz -otree.png

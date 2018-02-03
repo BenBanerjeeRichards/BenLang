@@ -1,0 +1,6 @@
+.idea
+*.pyc
+venv
+*.jar
+tree.png
+graphviz
