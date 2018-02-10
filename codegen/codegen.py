@@ -144,6 +144,8 @@ class CodeGen:
                 # Integer division
                 self.emit_unary_op("div", lhs, rhs)
                 self.emit_single_reg("mflo", dest)
+            elif op == "<":
+                self.emit_binary_op("slt", dest, lhs, rhs)
 
 
             # Save to stack

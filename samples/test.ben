@@ -1,1 +1,2 @@
-bool x = 345 < 100 + 12;
+bool x = 34 < 100 + 12;
+outputBool(x);
