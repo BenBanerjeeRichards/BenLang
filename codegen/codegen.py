@@ -56,6 +56,9 @@ class CodeGen:
     def emit_binary_intermediate(self, instruction: str, source_reg: int, dest_reg: int, intermediate: int):
         self.code += "\t{}\t${}, ${}, {}\n".format(instruction, source_reg, dest_reg, intermediate)
 
+    def emit_single_reg(self, instr: str, reg: int):
+        self.code += "\t{}\t${}\n".format(instr, reg)
+
     def emit_comment(self, comment):
         self.code += "\t# {}\n".format(comment)
 
@@ -127,14 +130,21 @@ class CodeGen:
             lhs = self.get_operand_register(il.rhs.lhs)
             rhs = self.get_operand_register(il.rhs.rhs)
 
-            instr = ""
             op = il.rhs.operation
             dest = self.alloc_register()
 
             if op == "+":
-                instr = "add"
+                self.emit_binary_op("add", dest, lhs, rhs)
+            elif op == "-":
+                self.emit_binary_op("sub", dest, lhs, rhs)
+            elif op == "*":
+                self.emit_unary_op("mult", lhs, rhs)
+                self.emit_single_reg("mflo", dest)
+            elif op == "/":
+                # Integer division
+                self.emit_unary_op("div", lhs, rhs)
+                self.emit_single_reg("mflo", dest)
 
-            self.emit_binary_op(instr, dest, lhs, rhs)
 
             # Save to stack
             self.save_reg_to_stack(dest, il.target.id)
