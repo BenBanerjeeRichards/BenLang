@@ -1,4 +1,1 @@
-int x = 34;
-int y = 12;
-int z = x + y;
-outputInt(z);
+outputInt(23 + 3);

@@ -200,6 +200,7 @@ class IlGenerator:
                 mem_loc = param_il
 
             param_memory_locs.append(mem_loc.id)
+        self._add_instruction(StartFunctionCallIl())
 
         for location in param_memory_locs:
             self._add_instruction(PushParamIl(location))
@@ -216,9 +217,6 @@ class IlGenerator:
         else:
             self._add_instruction(call)
 
-        # Pop parameters from stack
-        for i in range(len(root.params)):
-            self._add_instruction(PopParamIl())
         return ret
 
     def _add_instruction(self, instruction):

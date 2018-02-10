@@ -95,15 +95,6 @@ class FunctionCallIl:
         return "call {}".format(self.function_name)
 
 
-class PopParamIl:
-
-    def __init__(self):
-        pass
-
-    def __str__(self):
-        return "pop"
-
-
 class IfGotoIl:
 
     def __init__(self, condition, goto_label: str):
@@ -121,3 +112,12 @@ class GotoIl:
 
     def __str__(self):
         return "goto {}".format(self.label)
+
+
+class StartFunctionCallIl:
+
+    def __init__(self):
+        pass
+
+    def __str__(self):
+        return "StartFunctionCall"

@@ -24,7 +24,12 @@ def main(argv):
 
     cd = CodeGen(ilgen.instructions, ilgen.labels)
     cd.generate()
-    print(cd.code)
+
+    with open("mips_template.s", "r") as template_file, open("out.s", "w+") as output_file:
+        template = template_file.read()
+        code = template.format(cd.code)
+        output_file.write(code)
+        output_file.close()
 
 if __name__ == "__main__":
     main(sys.argv)

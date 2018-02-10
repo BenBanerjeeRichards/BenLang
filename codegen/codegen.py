@@ -76,8 +76,8 @@ class CodeGen:
                 self.generate_push(instruction)
             elif isinstance(instruction, FunctionCallIl):
                 self.generate_function_call(instruction)
-            elif isinstance(instruction, PopParamIl):
-                pass
+            elif isinstance(instruction, StartFunctionCallIl):
+                self.generate_function_call_start()
             else:
                 self.generate_assignment(instruction)
 
@@ -155,8 +155,13 @@ class CodeGen:
             self.emit_store(reg, self.stack_pointer, self.fp_register)
 
     def generate_function_call(self, il: FunctionCallIl):
-        if isinstance(il, FunctionCallIl):
-            # Set $fp to $sp
-            self.emit_unary_op("move", self.fp_register, self.sp_register)
-            # Do da call
-            self.emit_jal(il.function_name)
+        # Set $fp to $sp
+        self.emit_unary_op("move", self.fp_register, self.sp_register)
+        # Do da call
+        self.emit_jal(il.function_name)
+
+    def generate_function_call_start(self):
+        self.emit_binary_intermediate("addi", self.sp_register, self.sp_register, -4)
+        self.stack_pointer -= 4
+        self.emit_store(self.fp_register, self.stack_pointer, self.fp_register)
+
