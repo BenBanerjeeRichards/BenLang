@@ -6,6 +6,11 @@
 
 from il.il import *
 
+# Notes:
+
+# 1.  IL Gen wrong for while loop - should use conditional but jumps to start each time
+# 2.  We run out of registers - possible leak or just too much stuff going on and need to expand to s registers
+#      and the stack
 
 class CodeGen:
 
@@ -65,6 +70,10 @@ class CodeGen:
     def emit_newline(self):
         self.code += "\n"
 
+    def emit_branch(self, instr: str, lhs_reg: int, rhs_reg, label: str):
+        self.code += "\t{}\t${}, ${}, {}\n".format(instr, lhs_reg,  rhs_reg, label)
+
+
     def save_reg_to_stack(self, reg: int, memory_loc_id: int):
         stack_offset = self.get_stack_location(memory_loc_id)
         self.emit_store(reg, stack_offset, self.fp_register)
@@ -75,14 +84,26 @@ class CodeGen:
                 self.emit_newline()
             self.emit_comment(instruction)
 
+            # Generate labels
+            if i in self.il_labels:
+                self.emit_label(self.il_labels[i])
+
             if isinstance(instruction, PushParamIl):
                 self.generate_push(instruction)
             elif isinstance(instruction, FunctionCallIl):
                 self.generate_function_call(instruction)
             elif isinstance(instruction, StartFunctionCallIl):
                 self.generate_function_call_start()
+            elif isinstance(instruction, IfGotoIl):
+                self.generate_if_goto(instruction)
+            elif isinstance(instruction, GotoIl):
+                self.generate_goto(instruction)
             else:
                 self.generate_assignment(instruction)
+
+        # We can have a label at the very end of the program after instructions, check for this
+        if len(self.il_instructions) in self.il_labels:
+            self.emit_label(self.il_labels[len(self.il_instructions)])
 
     def get_stack_location(self, il_id: int):
         if il_id in self.stack_locations:
@@ -174,6 +195,27 @@ class CodeGen:
             self.free_register(lhs)
             self.free_register(rhs)
 
+        if isinstance(il.rhs, UnaryIl):
+            lhs = self.get_operand_register(il.rhs.operand)
+            dest = self.alloc_register()
+
+            if il.rhs.operation == "!":
+                # 1 xor 1 = 0
+                # 0 xor 1 = 1
+                # Hence xor is a not gate
+                one_reg = self.alloc_register()
+
+                self.emit_unary_intermediate("li", one_reg, 1)
+                self.emit_binary_op("xor", dest, lhs, one_reg)
+
+                self.free_register(one_reg)
+
+            self.save_reg_to_stack(dest, il.target.id)
+
+            self.free_register(lhs)
+            self.free_register(dest)
+
+
     def generate_push(self, il: PushParamIl):
         if isinstance(il, PushParamIl):
             stack_pos = self.get_stack_location(il.memory_location)
@@ -196,3 +238,11 @@ class CodeGen:
         self.stack_pointer -= 4
         self.emit_store(self.fp_register, self.stack_pointer, self.fp_register)
 
+    def generate_if_goto(self, il: IfGotoIl):
+        assert isinstance(il.condition, MemoryOperand)
+
+        lhs = self.get_operand_register(il.condition)
+        self.emit_branch("bne", lhs, 0, il.label)
+
+    def generate_goto(self, il: GotoIl):
+        self.emit_jump(il.label)

@@ -1,2 +1,14 @@
-bool x = 34 < 100 + 12;
-outputBool(10 == 10);
+if (10 < 12) {
+    outputInt(102);
+}
+
+if (34 < 10) {
+    outputInt(123);
+} else {
+    outputInt(1002349);
+
+int x = 0;
+while (x < 10) {
+    x = x + 1;
+    outputInt(x);
+}
