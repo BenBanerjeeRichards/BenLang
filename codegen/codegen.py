@@ -73,7 +73,6 @@ class CodeGen:
     def emit_branch(self, instr: str, lhs_reg: int, rhs_reg, label: str):
         self.code += "\t{}\t${}, ${}, {}\n".format(instr, lhs_reg,  rhs_reg, label)
 
-
     def save_reg_to_stack(self, reg: int, memory_loc_id: int):
         stack_offset = self.get_stack_location(memory_loc_id)
         self.emit_store(reg, stack_offset, self.fp_register)
@@ -119,13 +118,17 @@ class CodeGen:
         for register in self.t_registers:
             if register not in self.used_registers:
                 self.used_registers.append(register)
+                print("Alloc {}, used: {}".format(register, self.used_registers))
                 return register
 
-        raise NotImplementedError("Ran out of t registers")
+        raise RegisterError("Ran out of t registers")
 
     def free_register(self, register: int):
+        print("Freed {}".format(register))
         if register in self.used_registers:
             self.used_registers.remove(register)
+        else:
+            raise RegisterError("Tried to free unallocated register {} ".format(register))
 
     def get_operand_register(self, operand: Operand):
         if isinstance(operand, IntegerOperand):
@@ -137,6 +140,12 @@ class CodeGen:
             stack_loc = self.get_stack_location(operand.id)
             reg = self.alloc_register()
             self.emit_load(reg, stack_loc, self.fp_register)
+            return reg
+
+        if isinstance(operand, BoolOperand):
+            reg = self.alloc_register()
+            value = 1 if operand.value else 0
+            self.emit_unary_intermediate("li", reg, value)
             return reg
 
     def generate_assignment(self, il: AssignmentIl):
@@ -196,10 +205,11 @@ class CodeGen:
             self.free_register(rhs)
 
         if isinstance(il.rhs, UnaryIl):
-            lhs = self.get_operand_register(il.rhs.operand)
-            dest = self.alloc_register()
 
             if il.rhs.operation == "!":
+                lhs = self.get_operand_register(il.rhs.operand)
+                dest = self.alloc_register()
+
                 # 1 xor 1 = 0
                 # 0 xor 1 = 1
                 # Hence xor is a not gate
@@ -209,12 +219,10 @@ class CodeGen:
                 self.emit_binary_op("xor", dest, lhs, one_reg)
 
                 self.free_register(one_reg)
+                self.free_register(lhs)
+                self.free_register(dest)
 
-            self.save_reg_to_stack(dest, il.target.id)
-
-            self.free_register(lhs)
-            self.free_register(dest)
-
+                self.save_reg_to_stack(dest, il.target.id)
 
     def generate_push(self, il: PushParamIl):
         if isinstance(il, PushParamIl):
@@ -226,6 +234,7 @@ class CodeGen:
             self.emit_binary_intermediate("addi", self.sp_register, self.sp_register, -4)
             self.stack_pointer -= 4
             self.emit_store(reg, self.stack_pointer, self.fp_register)
+            self.free_register(reg)
 
     def generate_function_call(self, il: FunctionCallIl):
         # Set $fp to $sp
@@ -243,6 +252,11 @@ class CodeGen:
 
         lhs = self.get_operand_register(il.condition)
         self.emit_branch("bne", lhs, 0, il.label)
+        self.free_register(lhs)
 
     def generate_goto(self, il: GotoIl):
         self.emit_jump(il.label)
+
+
+class RegisterError(Exception):
+    pass

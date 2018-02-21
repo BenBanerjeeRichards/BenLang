@@ -60,9 +60,13 @@ class IlGenerator:
         if isinstance(root, IntNode):
             return IntegerOperand(root.value)
         if isinstance(root, TrueNode):
-            return BoolOperand(True)
+            self._next_memory()
+            self._add_instruction(AssignmentIl(self._current_memory(), BoolOperand(True)))
+            return self._current_memory()
         if isinstance(root, FalseNode):
-            return BoolOperand(False)
+            self._next_memory()
+            self._add_instruction(AssignmentIl(self._current_memory(), BoolOperand(False)))
+            return self._current_memory()
         if isinstance(root, StringNode):
             return StringOperand(root.string)
         if isinstance(root, IdentifierNode):
@@ -128,7 +132,6 @@ class IlGenerator:
             self.expression_to_il(root.statements)
             self._add_instruction(GotoIl(start_label))
             self.labels[len(self.instructions)] = end_label
-
 
     def _if_only_il(self, root: IfOnlyNode):
         self.if_label_idx += 1

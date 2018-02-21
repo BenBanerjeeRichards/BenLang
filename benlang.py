@@ -21,7 +21,6 @@ def main(argv):
     if len(ilgen.instructions) in ilgen.labels:
         print('{0:15}  {1}'.format(ilgen.labels[len(ilgen.instructions)], ""))
         pass
-
     cd = CodeGen(ilgen.instructions, ilgen.labels)
     cd.generate()
 
