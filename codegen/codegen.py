@@ -146,7 +146,26 @@ class CodeGen:
                 self.emit_single_reg("mflo", dest)
             elif op == "<":
                 self.emit_binary_op("slt", dest, lhs, rhs)
+            elif op == "==":
+                s1 = self.alloc_register()
+                s2 = self.alloc_register()
 
+                # We want to know if a == b
+                # a xor b = zero if and only if a == b
+                # So we test if a xor b is equal to zero
+                # but MIPS doesn't have a "set if equal to zero"
+                # We check if a xor b < 0 or a xor b > 0 instead
+                # Finally negate result using stli for checking if not one
+
+                self.emit_binary_op("xor", lhs, lhs, rhs)
+
+                self.emit_binary_op("sltu", s1, lhs, 0)
+                self.emit_binary_op("sltu", s2, 0, lhs)
+                self.emit_binary_op("or", lhs, s1, s2)
+                self.emit_binary_intermediate("slti", dest, lhs, 1)
+
+                self.free_register(s1)
+                self.free_register(s2)
 
             # Save to stack
             self.save_reg_to_stack(dest, il.target.id)

@@ -1,2 +1,2 @@
 bool x = 34 < 100 + 12;
-outputBool(x);
+outputBool(10 == 10);
