@@ -10,7 +10,7 @@ class VariableEnvironment:
     def add_variable(self, name, memory_location : int):
         self.variables[-1][name] = memory_location
 
-    def get_variable(self, name):
+    def get_variable(self, name) -> int:
         for scope in self.variables:
             if name in scope:
                 return scope[name]
@@ -107,11 +107,16 @@ class IlGenerator:
         if isinstance(root, DeclarationNode) or isinstance(root, AssignmentNode):
             rhs = self.expression_to_il(root.rhs)
 
-            self._next_memory()
-            self.instructions.append(AssignmentIl(self._current_memory(), rhs))
+            memory_loc_id = self.env.get_variable(root.identifier.identifier)
+
+            if not memory_loc_id:
+                self._next_memory()
+                memory_loc_id = self._current_memory().id
+
+            self.instructions.append(AssignmentIl(MemoryOperand(memory_loc_id), rhs))
 
             # Store memory location in variable
-            self.env.add_variable(root.identifier.identifier, self.memory_idx)
+            self.env.add_variable(root.identifier.identifier, memory_loc_id)
             return
 
         if isinstance(root, WhileNode):
