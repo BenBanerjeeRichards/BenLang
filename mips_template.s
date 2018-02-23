@@ -7,7 +7,7 @@
 main: 
 	move 	$fp, $sp	# Save top of stack position
 
-	{}
+{}
 
 	# Quit the program
 	li	$v0, 10		# syscall = exit

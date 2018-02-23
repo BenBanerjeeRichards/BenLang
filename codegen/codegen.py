@@ -31,38 +31,107 @@ class CodeGen:
         self.sp_register = 29
         self.zero_register = 0
 
+        self.mips_registers = {
+            0: "zero",
+            1: "at",
+            2: "v0",
+            3: "v1",
+            4: "a0",
+            5: "a1",
+            6: "a2",
+            7: "a3",
+            8: "t0",
+            9: "t1",
+            10: "t2",
+            11: "t3",
+            12: "t4",
+            13: "t5",
+            14: "t6",
+            15: "t7",
+            16: "s0",
+            17: "s1",
+            18: "s2",
+            19: "s3",
+            20: "s4",
+            21: "s5",
+            22: "s6",
+            23: "s7",
+            24: "t8",
+            25: "t9",
+            26: "k0",
+            27: "k1",
+            28: "gp",
+            29: "sp",
+            30: "fp",
+            31: "ra"
+        }
+
+    def emit_instruction(self, instruction: str, params, inline_comment):
+        params_formatted = ", ".join(params)
+        without_comment = "\t{0:<10}{1:<20}".format(instruction, params_formatted)
+        if inline_comment:
+            self.code += "{0}#{1:<30}\n".format(without_comment, inline_comment)
+        else:
+            self.code += "{}\n".format(without_comment)
+
+    def pretty_register(self, register_id: int):
+        assert 31 >= register_id >= 0
+        return "${}".format(self.mips_registers[register_id])
+
+    def il_id_from_stack_location(self, stack_location: int):
+        for k, v in self.stack_locations.items():
+            if v == stack_location:
+                return k
+        return None
+
     def emit_label(self, label: str):
         self.code += "{}:\n".format(label)
 
     def emit_unary_op(self, instruction: str, dest_reg: int, op: int):
-        self.code += "\t{}\t${}, ${}\n".format(instruction, dest_reg, op)
+        self.emit_instruction(instruction, [self.pretty_register(dest_reg), self.pretty_register(op)], "")
 
     def emit_binary_op(self, instruction: str, dest_reg: int, op1_reg: int, op2_reg: int):
-        self.code += "\t{}\t${}, ${}, ${}\n".format(instruction, dest_reg, op1_reg, op2_reg)
+        self.emit_instruction(instruction, [self.pretty_register(dest_reg), self.pretty_register(op1_reg), self.pretty_register(op2_reg)], "")
 
     def emit_jump(self, label: str):
-        self.code += "\tj\t{}\n".format(label)
+        self.emit_instruction("j", [label], "")
 
     def emit_return(self):
-        self.code += "\tja\t$ra\n"
+        self.emit_instruction("ja", ["$ra"], "")
 
     def emit_store(self, source_reg:int, offset: int, dest: int):
-        self.code += "\tsw\t${}, {}(${})\n".format(source_reg, offset, dest)
+        pretty_source = self.pretty_register(source_reg)
+        pretty_dest = self.pretty_register(dest)
+
+        comment = "{} -> {}[{}]".format(pretty_source, pretty_dest, offset)
+        with_offset = "{}({})".format(offset, pretty_dest)
+        self.emit_instruction("sw", [pretty_source, with_offset], comment)
 
     def emit_load(self, source_reg:int, offset: int, dest: int):
-        self.code += "\tlw\t${}, {}(${})\n".format(source_reg, offset, dest)
+        pretty_source = self.pretty_register(source_reg)
+        pretty_dest = self.pretty_register(dest)
+        with_offset = "{}({})".format(offset, pretty_dest)
+
+        existing_id = self.il_id_from_stack_location(offset)
+        additional_comment = ""
+        if existing_id:
+            additional_comment = " (t{})".format(existing_id)
+
+        comment = "{} <- {}[{}] {}".format(pretty_source, pretty_dest, offset, additional_comment)
+
+        self.emit_instruction("lw", [pretty_source, with_offset], comment)
 
     def emit_jal(self, label:str):
-        self.code += "\tjal\t{}\n".format(label)
+        self.emit_instruction("jal", [label], "")
 
     def emit_unary_intermediate(self, instruction: str, reg: int, intermediate: int):
-        self.code += "\t{}\t${}, {}\n".format(instruction, reg, intermediate)
+        self.emit_instruction(instruction, [self.pretty_register(reg), str(intermediate)], "")
 
     def emit_binary_intermediate(self, instruction: str, source_reg: int, dest_reg: int, intermediate: int):
-        self.code += "\t{}\t${}, ${}, {}\n".format(instruction, source_reg, dest_reg, intermediate)
+        self.emit_instruction(instruction, [self.pretty_register(source_reg),self.pretty_register(dest_reg), str(intermediate)], "")
 
     def emit_single_reg(self, instr: str, reg: int):
-        self.code += "\t{}\t${}\n".format(instr, reg)
+        self.emit_instruction(instr, [self.pretty_register(reg)], "")
 
     def emit_comment(self, comment):
         self.code += "\t# {}\n".format(comment)
@@ -71,7 +140,7 @@ class CodeGen:
         self.code += "\n"
 
     def emit_branch(self, instr: str, lhs_reg: int, rhs_reg, label: str):
-        self.code += "\t{}\t${}, ${}, {}\n".format(instr, lhs_reg,  rhs_reg, label)
+        self.emit_instruction(instr, [self.pretty_register(lhs_reg), self.pretty_register(rhs_reg), label], "")
 
     def save_reg_to_stack(self, reg: int, memory_loc_id: int):
         stack_offset = self.get_stack_location(memory_loc_id)
@@ -118,13 +187,13 @@ class CodeGen:
         for register in self.t_registers:
             if register not in self.used_registers:
                 self.used_registers.append(register)
-                print("Alloc {}, used: {}".format(register, self.used_registers))
+                # print("Alloc {}, used: {}".format(register, self.used_registers))
                 return register
 
         raise RegisterError("Ran out of t registers")
 
     def free_register(self, register: int):
-        print("Freed {}".format(register))
+        # print("Freed {}".format(register))
         if register in self.used_registers:
             self.used_registers.remove(register)
         else:
