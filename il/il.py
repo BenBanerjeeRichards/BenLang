@@ -1,3 +1,10 @@
+class Il:
+
+    def __init__(self, il_instructions, il_labels, num_memory_locations):
+        self.num_memory_locations = num_memory_locations
+        self.labels = il_labels
+        self.instructions = il_instructions
+
 class Operand:
 
     def __init__(self):

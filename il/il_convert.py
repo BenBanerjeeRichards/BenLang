@@ -33,9 +33,9 @@ class IlGenerator:
         self.if_label_idx = 0
         self.while_label_idx = 0
 
-    def get_stack_size(self):
-        # ints and bools both 4 bytes
-        return 4 * self.memory_idx
+    def to_il(self, ast: Node):
+        self.expression_to_il(ast)
+        return Il(self.instructions, self.labels, self.memory_idx)
 
     def _if_label_if(self, id: int):
         return "if_{}_if".format(id)

@@ -14,10 +14,11 @@ from il.il import *
 
 class CodeGen:
 
-    def __init__(self, il_instructions, il_labels):
+    def __init__(self, il: Il):
         # We emit a string which is then processed by SPIM
-        self.il_labels = il_labels
-        self.il_instructions = il_instructions
+        self.il_labels = il.labels
+        self.il_instructions = il.instructions
+        self.il_memory_locs = il.num_memory_locations
         self.code = ""
         self.stack_locations = {}   # Dict between memory location id and stack offset from $fp
         self.stack_pointer = 0
@@ -325,6 +326,9 @@ class CodeGen:
 
     def generate_goto(self, il: GotoIl):
         self.emit_jump(il.label)
+
+    def _stack_size(self):
+        return 4 * self.il_memory_locs
 
 
 class RegisterError(Exception):

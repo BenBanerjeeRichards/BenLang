@@ -13,15 +13,15 @@ def main(argv):
     draw_ast(ast)
 
     check(ast)
-    ilgen = IlGenerator()
-    ilgen.expression_to_il(ast)
-    for i, instruction in enumerate(ilgen.instructions):
-        label = ilgen.labels[i] if i in ilgen.labels else ""
+    il = IlGenerator().to_il(ast)
+    for i, instruction in enumerate(il.instructions):
+        label = il.labels[i] if i in il.labels else ""
         print('{0:15}  {1}'.format(label, instruction))
-    if len(ilgen.instructions) in ilgen.labels:
-        print('{0:15}  {1}'.format(ilgen.labels[len(ilgen.instructions)], ""))
+    if len(il.instructions) in il.labels:
+        print('{0:15}  {1}'.format(il.labels[len(il.instructions)], ""))
         pass
-    cd = CodeGen(ilgen.instructions, ilgen.labels)
+
+    cd = CodeGen(il)
     cd.generate()
 
     with open("mips_template.s", "r") as template_file, open("out.s", "w+") as output_file:
