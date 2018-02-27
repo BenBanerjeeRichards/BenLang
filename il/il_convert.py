@@ -210,8 +210,8 @@ class IlGenerator:
             param_memory_locs.append(mem_loc.id)
         self._add_instruction(StartFunctionCallIl())
 
-        for location in param_memory_locs:
-            self._add_instruction(PushParamIl(location))
+        for i, location in enumerate(param_memory_locs):
+            self._add_instruction(PushParamIl(location, i + 1))
 
         # Push function call
         call = FunctionCallIl(root.function_name.identifier)
@@ -224,6 +224,9 @@ class IlGenerator:
             ret = self._current_memory()
         else:
             self._add_instruction(call)
+
+        # Finally end function call
+        self._add_instruction(EndFunctionCallIl(len(param_memory_locs)))
 
         return ret
 

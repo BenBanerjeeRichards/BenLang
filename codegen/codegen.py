@@ -148,6 +148,14 @@ class CodeGen:
         self.emit_store(reg, stack_offset, self.fp_register)
 
     def generate(self):
+        # First allocate space on stack
+        stack_size = self._stack_size()
+        self.emit_binary_intermediate("addi", self.sp_register, self.sp_register, stack_size * -1)
+
+        # Set $fp = $sp
+        self.emit_unary_op("move", 30, 29)
+        self.emit_newline()
+
         for i, instruction in enumerate(self.il_instructions):
             if i > 0:
                 self.emit_newline()
@@ -163,6 +171,8 @@ class CodeGen:
                 self.generate_function_call(instruction)
             elif isinstance(instruction, StartFunctionCallIl):
                 self.generate_function_call_start()
+            elif isinstance(instruction, EndFunctionCallIl):
+                self.generate_function_call_end(instruction)
             elif isinstance(instruction, IfGotoIl):
                 self.generate_if_goto(instruction)
             elif isinstance(instruction, GotoIl):
@@ -179,10 +189,11 @@ class CodeGen:
             return self.stack_locations[il_id]
 
         # New stack location
-        self.emit_binary_intermediate("addi", self.sp_register, self.sp_register,  -4)
-        self.stack_pointer -= 4
-        self.stack_locations[il_id] = self.stack_pointer
-        return self.stack_pointer
+        #self.emit_binary_intermediate("addi", self.sp_register, self.sp_register,  -4)
+        location = self.stack_pointer
+        self.stack_locations[il_id] = location
+        self.stack_pointer += 4
+        return location
 
     def alloc_register(self) -> int:
         for register in self.t_registers:
@@ -302,8 +313,9 @@ class CodeGen:
             self.emit_load(reg, stack_pos, self.fp_register)
             # Push onto stack
             self.emit_binary_intermediate("addi", self.sp_register, self.sp_register, -4)
-            self.stack_pointer -= 4
-            self.emit_store(reg, self.stack_pointer, self.fp_register)
+
+            # Remember that -4($fp) stores the old $fp value
+            self.emit_store(reg, (il.param_num + 1) * -4, self.fp_register)
             self.free_register(reg)
 
     def generate_function_call(self, il: FunctionCallIl):
@@ -314,8 +326,13 @@ class CodeGen:
 
     def generate_function_call_start(self):
         self.emit_binary_intermediate("addi", self.sp_register, self.sp_register, -4)
-        self.stack_pointer -= 4
-        self.emit_store(self.fp_register, self.stack_pointer, self.fp_register)
+        self.stack_pointer  = 0
+        self.emit_store(self.fp_register, -4, self.fp_register)
+
+    def generate_function_call_end(self, il: EndFunctionCallIl):
+        # Also account for space taken by $fp
+        total_to_add = 4 * (il.num_params + 1)
+        self.emit_binary_intermediate("addi", self.sp_register, self.sp_register, total_to_add)
 
     def generate_if_goto(self, il: IfGotoIl):
         assert isinstance(il.condition, MemoryOperand)

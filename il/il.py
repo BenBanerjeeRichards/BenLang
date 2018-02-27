@@ -5,6 +5,7 @@ class Il:
         self.labels = il_labels
         self.instructions = il_instructions
 
+
 class Operand:
 
     def __init__(self):
@@ -86,11 +87,12 @@ class AssignmentIl:
 
 class PushParamIl:
 
-    def __init__(self, memory_location: int):
+    def __init__(self, memory_location: int, param_num: int):
         self.memory_location = memory_location
+        self.param_num = param_num
 
     def __str__(self):
-        return "push t{}".format(self.memory_location)
+        return "push t{} [num #{}]".format(self.memory_location, self.param_num)
 
 
 class FunctionCallIl:
@@ -128,3 +130,12 @@ class StartFunctionCallIl:
 
     def __str__(self):
         return "StartFunctionCall"
+
+
+class EndFunctionCallIl:
+
+    def __init__(self, num_params: int):
+        self.num_params = num_params
+
+    def __str__(self):
+        return "EndFunctionCall"

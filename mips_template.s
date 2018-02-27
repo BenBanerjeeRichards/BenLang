@@ -5,8 +5,6 @@
 	.text
 	
 main: 
-	move 	$fp, $sp	# Save top of stack position
-
 {}
 
 	# Quit the program
@@ -15,9 +13,9 @@ main:
 
 outputInt:
 	# Load param
-	lw	$a0, 0($fp)
+	lw	    $a0, 0($fp)
 
-		# Syscall
+	# Syscall
 	li	$v0, 1	# syscall = print int
 	syscall		 
 	
