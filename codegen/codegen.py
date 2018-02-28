@@ -6,11 +6,6 @@
 
 from il.il import *
 
-# Notes:
-
-# 1.  IL Gen wrong for while loop - should use conditional but jumps to start each time
-# 2.  We run out of registers - possible leak or just too much stuff going on and need to expand to s registers
-#      and the stack
 
 class CodeGen:
 
@@ -189,7 +184,6 @@ class CodeGen:
             return self.stack_locations[il_id]
 
         # New stack location
-        #self.emit_binary_intermediate("addi", self.sp_register, self.sp_register,  -4)
         location = self.stack_pointer
         self.stack_locations[il_id] = location
         self.stack_pointer += 4

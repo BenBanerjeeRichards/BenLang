@@ -1,0 +1,3 @@
+int x = 10;
+outputInt(x);
+outputInt(x + 10);

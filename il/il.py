@@ -5,6 +5,13 @@ class Il:
         self.labels = il_labels
         self.instructions = il_instructions
 
+    def __str__(self):
+        for i, instruction in enumerate(self.instructions):
+            label = self.labels[i] if i in self.labels else ""
+            print('{0:15}  {1}'.format(label, instruction))
+        if len(self.instructions) in self.labels:
+            print('{0:15}  {1}'.format(self.labels[len(self.instructions)], ""))
+            pass
 
 class Operand:
 

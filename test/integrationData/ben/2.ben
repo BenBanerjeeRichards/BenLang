@@ -1,0 +1,4 @@
+outputBool(true);
+outputBool(false);
+outputInt(3);
+outputInt(4);
