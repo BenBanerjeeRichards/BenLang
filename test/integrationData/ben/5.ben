@@ -1,0 +1,9 @@
+int x = 1;
+int y = 2;
+
+outputBool(true && false);
+outputBool(true || false);
+outputBool(false || (true && false));
+outputBool(x == 1 && y == 2);
+outputBool(x == 1 || y == 1);
+outputBool(x == 2 && y == 1);

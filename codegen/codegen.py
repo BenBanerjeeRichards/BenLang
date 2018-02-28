@@ -183,8 +183,14 @@ class CodeGen:
         if il_id in self.stack_locations:
             return self.stack_locations[il_id]
 
+        existing_locs = list(self.stack_locations.values())
+        if len(existing_locs) == 0:
+            location = 0
+        else:
+            location = max(existing_locs) + 4
+
         # New stack location
-        location = self.stack_pointer
+        #location = self.stack_pointer
         self.stack_locations[il_id] = location
         self.stack_pointer += 4
         return location
@@ -251,6 +257,10 @@ class CodeGen:
                 self.emit_single_reg("mflo", dest)
             elif op == "<":
                 self.emit_binary_op("slt", dest, lhs, rhs)
+            elif op == "&&":
+                self.emit_binary_op("and", dest, lhs, rhs)
+            elif op == "||":
+                self.emit_binary_op("or", dest, lhs, rhs)
             elif op == "==":
                 s1 = self.alloc_register()
                 s2 = self.alloc_register()
