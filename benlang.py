@@ -19,10 +19,10 @@ def main(argv):
         print("Expected params: benlang.py <input.ben> <output.s>")
         return
 
-    compile_benlang(argv[1], argv[2])
+    compile_benlang(argv[1], argv[2], True)
 
 
-def compile_benlang(input_file: str, output_file: str):
+def compile_benlang(input_file: str, output_file: str, debug=False):
     # Parse
     syntax_tree = get_syntax_tree(input_file)
     # Syntax -> AST
@@ -34,14 +34,15 @@ def compile_benlang(input_file: str, output_file: str):
 
     # Generate IL
     il = IlGenerator().to_il(ast)
-
+    if debug:
+        print(il)
     # Codegen
     cd = CodeGen(il)
     cd.generate()
 
     with open("mips_template.s", "r") as template_file, open(output_file, "w+") as output_file:
         template = template_file.read()
-        code = template.format(cd.code)
+        code = template.format(cd.generate_constants(), cd.code)
         output_file.write(code)
         output_file.close()
 

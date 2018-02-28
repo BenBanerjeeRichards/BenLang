@@ -1,5 +1,6 @@
 from il.il import *
 from parse.ast import *
+from re import sub
 
 
 class VariableEnvironment:
@@ -33,9 +34,13 @@ class IlGenerator:
         self.if_label_idx = 0
         self.while_label_idx = 0
 
+        self.string_constants_by_string = {}
+        self.string_by_string_constant = {}
+
+
     def to_il(self, ast: Node):
         self.expression_to_il(ast)
-        return Il(self.instructions, self.labels, self.memory_idx)
+        return Il(self.instructions, self.labels, self.memory_idx, self.string_constants_by_string)
 
     def _if_label_if(self, id: int):
         return "if_{}_if".format(id)
@@ -68,7 +73,7 @@ class IlGenerator:
             self._add_instruction(AssignmentIl(self._current_memory(), BoolOperand(False)))
             return self._current_memory()
         if isinstance(root, StringNode):
-            return StringOperand(root.string)
+            return StringOperand(self.add_string(root.string))
         if isinstance(root, IdentifierNode):
             memory_location = self.env.get_variable(root.identifier)
             assert memory_location is not None
@@ -240,3 +245,23 @@ class IlGenerator:
     def _current_memory(self) -> MemoryOperand:
         return MemoryOperand(self.memory_idx)
 
+    def add_string(self, string: str):
+        if string in self.string_constants_by_string:
+            # Don't create duplicate constants
+            return self.string_constants_by_string[string]
+
+        latin_chars = sub("[^a-z]", '', string.lower())
+        if len(latin_chars) < 2:
+            key = "str_{}".format(len(self.string_constants_by_string) + 1)
+        else:
+            if len(latin_chars) > 6:
+                latin_chars = latin_chars[0:7]
+
+            key = "str_{}".format(latin_chars)
+
+            if key in self.string_by_string_constant:
+                key += "_{}".format(len(self.string_constants_by_string) + 1)
+
+        self.string_by_string_constant[key] = string
+        self.string_constants_by_string[string] = key
+        return key

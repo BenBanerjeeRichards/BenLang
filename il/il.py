@@ -1,17 +1,26 @@
 class Il:
 
-    def __init__(self, il_instructions, il_labels, num_memory_locations):
+    def __init__(self, il_instructions, il_labels, num_memory_locations, string_constant_by_string):
+        self.string_constant_by_string = string_constant_by_string
         self.num_memory_locations = num_memory_locations
         self.labels = il_labels
         self.instructions = il_instructions
 
     def __str__(self):
+        result = ""
+        for const, string in self.string_constant_by_string.items():
+            print("{0:15}  const {1} = \"{2}\"".format("", string, const))
+
         for i, instruction in enumerate(self.instructions):
             label = self.labels[i] if i in self.labels else ""
-            print('{0:15}  {1}'.format(label, instruction))
+            result += '{0:15}  {1}'.format(label, instruction) + "\n"
         if len(self.instructions) in self.labels:
-            print('{0:15}  {1}'.format(self.labels[len(self.instructions)], ""))
+            result += '{0:15}  {1}'.format(self.labels[len(self.instructions)], "") + "\n"
             pass
+
+        return result
+
+
 
 class Operand:
 

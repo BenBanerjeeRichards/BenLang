@@ -14,6 +14,7 @@ class CodeGen:
         self.il_labels = il.labels
         self.il_instructions = il.instructions
         self.il_memory_locs = il.num_memory_locations
+        self.il = il
         self.code = ""
         self.stack_locations = {}   # Dict between memory location id and stack offset from $fp
         self.stack_pointer = 0
@@ -179,6 +180,12 @@ class CodeGen:
         if len(self.il_instructions) in self.il_labels:
             self.emit_label(self.il_labels[len(self.il_instructions)])
 
+    def generate_constants(self) -> str:
+        constants = ""
+        for val, const in self.il.string_constant_by_string.items():
+            constants += "\t\t{}:\t\t.asciiz \"{}\"\n".format(const, val)
+        return constants
+
     def get_stack_location(self, il_id: int):
         if il_id in self.stack_locations:
             return self.stack_locations[il_id]
@@ -227,6 +234,11 @@ class CodeGen:
             reg = self.alloc_register()
             value = 1 if operand.value else 0
             self.emit_unary_intermediate("li", reg, value)
+            return reg
+
+        if isinstance(operand, StringOperand):
+            reg = self.alloc_register()
+            self.emit_unary_intermediate("la", reg, operand.value)
             return reg
 
     def generate_assignment(self, il: AssignmentIl):

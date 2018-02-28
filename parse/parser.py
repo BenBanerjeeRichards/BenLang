@@ -160,7 +160,7 @@ def get_expression_value(root):
     if root.symbol.type == BenLangParser.IDENTIFIER:
         return IdentifierNode(root.symbol.text, position)
     if root.symbol.type == BenLangParser.STRING:
-        return StringNode(root.symbol.text, position)
+        return StringNode(root.symbol.text[1:-1], position)
 
 
 def get_expression_binary_ast(operator, lhs, rhs, start_position, stop_position):

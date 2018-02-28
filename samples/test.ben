@@ -1,6 +1,3 @@
-int x = 1;
-int y = 2;
-
-outputBool(true);
-outputBool(false);
-outputBool(x == 1);
+string name = "Hello world!";
+string name2 = "Hello world the second!";
+outputStr(name);

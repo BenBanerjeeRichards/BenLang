@@ -2,6 +2,7 @@
 		.globl main
         _str_true:		.asciiz "true"
         _str_false:		.asciiz "false"
+{}
 	.text
 	
 main: 
@@ -10,6 +11,21 @@ main:
 	# Quit the program
 	li	$v0, 10		# syscall = exit
 	syscall
+
+outputStr:
+	# Load param
+	lw	    $a0, 0($fp)
+
+	# Syscall
+	li	$v0, 4	# syscall = print_string
+	syscall
+
+	# Delete locals
+	move 	$sp, $fp
+	lw	$fp, 4($fp)
+
+	# Done
+	jr	$ra
 
 outputInt:
 	# Load param
