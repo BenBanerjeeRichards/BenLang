@@ -1,0 +1,12 @@
+int x = 10;
+int y= 12;
+
+if (x < y) {
+    outputInt(1);
+} else {
+    outputInt(2);
+}
+
+if (y < 2 * (x + y)) {
+    outputInt(3);
+}
