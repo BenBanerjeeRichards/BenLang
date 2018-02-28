@@ -11,12 +11,15 @@ mars = "Mars4_5.jar"
 FNULL = open(os.devnull, 'w')
 
 def main(argv):
-    if len(argv) != 3:
+    if len(argv) == 2 and argv[1] == "test":
+        test()
+        return
+
+    elif len(argv) != 3:
         print("Expected params: benlang.py <input.ben> <output.s>")
         return
 
     compile_benlang(argv[1], argv[2])
-    test()
 
 
 def compile_benlang(input_file: str, output_file: str):
